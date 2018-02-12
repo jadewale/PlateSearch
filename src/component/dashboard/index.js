@@ -21,6 +21,10 @@ class Dashboard extends React.Component {
     constructor(props) {
         super(props);
 
+        this.getLocation().then((res) => {
+            debugger;
+        });
+
         if(localStorage.getItem('admin')) {
             setTimeout(()=> {document.getElementById('widget').style.display = 'none';}, 3000);
             this.props.fetchAdmin();
@@ -31,6 +35,22 @@ class Dashboard extends React.Component {
         localStorage.clear();
     }
 
+     getLocation = () => {
+        const geolocation = navigator.geolocation;
+
+        const location = new Promise((resolve, reject) => {
+            if (!geolocation) {
+                reject(new Error('Not Supported'));
+            }
+
+            geolocation.getCurrentPosition((position) => {
+                resolve(position);
+            }, () => {
+                reject(new Error('Permission denied'));
+            });
+        });
+        return location;
+    };
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.userData !== this.props.userData) {
@@ -125,5 +145,7 @@ function mapDispatchToProps(dispatch) {
         messages: (msg) => dispatch(receiveMessageSuccess(msg)),
     }
 }
+
+
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Dashboard))
