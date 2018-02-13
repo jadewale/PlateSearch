@@ -89,13 +89,13 @@ class Dashboard extends React.Component {
         return (
             <div className="skin-blue sidebar-mini wrapper">
                 <Header/>
-                <Sidebar/>
+                <Sidebar photo={this.props.user.photo} />
                 <ToastContainer />
                <div className="content-wrapper">
                     <section className="content-header">
                         <h1>
                             Welcome
-                            <small> {this.props.userData.email || 'User'}</small>
+                            <small> {this.props.userData.email || this.props.user.name ||  'User'}</small>
                         </h1>
                         Please Upload your License for Approval
 

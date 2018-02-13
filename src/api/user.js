@@ -33,6 +33,7 @@ export function googleSignIn() {
             var user = result.user;
             const email = user.email;
             var userEmail = {};
+            debugger;
 
             let found = false;
             let userDb = firebase.firestore();
@@ -78,29 +79,30 @@ export function facebookSignIn() {
             'display': 'popup'
         });
         firebase.auth().signInWithPopup(provider).then(function(result) {
-
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
             var token = result.credential.accessToken;
             // The signed-in user info.
             var user = result.user;
             let email = user.email;
             var userEmail = {};
+            let photoUrl = user.photoURL;
+            let name = user.displayName;
 
-            let found = false;
+           let found = false;
             let userDb = firebase.firestore();
             userDb.collection("users").get().then(function(querySnapshot) {
                 querySnapshot.forEach(function(doc) {
                     // doc.data() is never undefined for query doc snapshots
                     if(doc.data().email === email) {
                         found = true;
-                        userEmail = { email: doc.data().email , verified: doc.data().verified }
+                        userEmail = { email: doc.data().email , verified: doc.data().verified, photo: photoUrl, name }
                     }
                 });
 
                 if (found) {
                     resolve(userEmail);
                 } else {
-                    userDb.collection("users").add({'email': email, 'verified': false})
+                    userDb.collection("users").add({'email': email, 'verified': false, photo: photoUrl, name})
                         .then(function(doc) {
                             resolve({email: user, verified: false});
                         });
@@ -290,7 +292,6 @@ export function signUp(email, password) {
 export function auth(cb) {
     firebase.auth().onAuthStateChanged((user, err) => {
         if (user) {
-            debugger;
             const isAnonymous = user.isAnonymous;
             const uid = user.uid;
             cb(uid);

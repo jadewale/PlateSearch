@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-
 let menuObject = [{menu: 'Dashboard', children: ['register', 'search'], id: 1}];
 
 function generateMenu(id) {
@@ -17,12 +16,12 @@ function generateMenu(id) {
 
 }
 
-const SideBar = () => (
+const SideBar = ({photo}) => (
     <aside className="main-sidebar">
         <section className="sidebar">
             <div className="user-panel">
                 <div className="pull-left image">
-
+                  <img src={photo} className="img-circle" alt="User Image"/>
                 </div>
                 <div className="pull-left info">
                     <p></p>
