@@ -122,6 +122,10 @@ class  SearchBox extends React.Component {
         toast("Wow so easy !", { autoClose: 5000 });
     };
 
+    onFormSubmit = () => {
+
+    };
+
     triggerSearch = () => {
 
         console.log(this.props.user);
@@ -160,7 +164,7 @@ class  SearchBox extends React.Component {
         return (
             <div className="row">
                 <div className="col-md-12 center-block col-xs-*">
-                    <form action="#" method="get" class="sidebar-form" _lpchecked="1">
+                    <form onSubmit={this.onFormSubmit} class="sidebar-form" _lpchecked="1">
                         <div class="input-group">
                             <input type="text" onChange={this.searchInput} style={{backgroundColor: 'white'}} name="q" class="form-control" placeholder="Search..."/>
                             <span class="input-group-btn">

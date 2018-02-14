@@ -33,7 +33,8 @@ export function googleSignIn() {
             var user = result.user;
             const email = user.email;
             var userEmail = {};
-            debugger;
+            let photoUrl = user.photoURL;
+            let name = user.displayName;
 
             let found = false;
             let userDb = firebase.firestore();
@@ -42,14 +43,13 @@ export function googleSignIn() {
                     // doc.data() is never undefined for query doc snapshots
                     if(doc.data().email === email) {
                         found = true;
-                        userEmail = { email: doc.data().email , verified: doc.data().verified }
+                        userEmail = { email: doc.data().email , verified: doc.data().verified, photo: photoUrl, name }
                     }
                 });
-
                 if (found) {
                     resolve(userEmail);
                 }else {
-                    userDb.collection("users").add({'email': email, 'verified': false})
+                    userDb.collection("users").add({'email': email, 'verified': false, photo: photoUrl, name})
                         .then(function(doc) {
                             resolve(user);
                         });

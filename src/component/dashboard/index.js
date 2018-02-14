@@ -13,17 +13,40 @@ import AdminCard from '../user/profile/AdminCard';
 import ChatBox from '../user/chat/ChatBox';
 import firebase from 'firebase';
 import { ToastContainer, toast } from 'react-toastify';
+let google = {};
 
+
+function geocodeLatLng(geocoder, value, props) {
+
+  var input = value;
+  var latlngStr = input.split(',', 2);
+  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+  geocoder.geocode({'location': latlng}, function (results, status) {
+    if (status === 'OK') {
+      if (results[0]) {
+        if(results[0].formatted_address.match(/(\sLagos,\s)/g)) {
+            alert('You Have authorized access due to your location');
+            return;
+        } else{
+            alert('You do not have access due to your location');
+            props.history.push('/login');
+            return false;
+        }
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+  });
+}
 
 class Dashboard extends React.Component {
 
 
+
     constructor(props) {
         super(props);
-
-        this.getLocation().then((res) => {
-            debugger;
-        });
 
         if(localStorage.getItem('admin')) {
             setTimeout(()=> {document.getElementById('widget').style.display = 'none';}, 3000);
@@ -69,12 +92,32 @@ class Dashboard extends React.Component {
         }
     }
 
+    getGeo = (coors) => {
+        let latitude = coors.coords.latitude;
+        let longitude = coors.coords.longitude;
+
+        let geocode = {};
+        if(window.google.maps) {
+          google = window.google;
+          geocode = new google.maps.Geocoder;
+          geocodeLatLng(geocode, `${latitude},${longitude}`, this.props);
+        } else{
+            this.props.history.push('/login');
+        }
+
+    }
+
     componentDidMount(){
         if(this.props.user.email) {
              setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 2000);
         } else{
 
         }
+      this.getLocation().then((res) => {
+            if(google) {
+              setTimeout(() => { this.getGeo(res)}, 0);
+            }
+      });
     }
 
     receiveNotifications = (id) => {
