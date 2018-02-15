@@ -200,7 +200,6 @@ function createSocketChannel (userChat) {
     }
 
     userChat.on('value', (data) => {
-        debugger;
       receiveHandler(data.val());
     })
 

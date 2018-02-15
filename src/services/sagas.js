@@ -103,12 +103,10 @@ function* sendMessageSaga(action) {
 
 function* receiveMessageSaga(action) {
     try {
-            debugger;
             const receiveMessage = yield call(receiveMessageAPI, action.id);
 
             while(true) {
                 const value = yield take(receiveMessage);
-                debugger;
                 yield put(receiveMessageSuccess(value));
             }
 

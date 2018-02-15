@@ -63,8 +63,8 @@ export default function userReducer(state = initialState, action) {
         case RECEIVE_MESSAGE:
             return {...state, messages: []};
 
-        case RECEIVE_MESSAGE_SUCCESS:
-            return {...state, messages: [...state.messages, action.msg] };
+      case RECEIVE_MESSAGE_SUCCESS:
+            return {...state, messages: [action.msg] };
 
         case SHOWLOADER:
             return {...state, refresh: true};

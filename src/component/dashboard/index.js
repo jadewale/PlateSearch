@@ -28,6 +28,7 @@ function geocodeLatLng(geocoder, value, props) {
             alert('You Have authorized access due to your location');
             return;
         } else{
+          console.log(results[0].formatted_address);
             alert('You do not have access due to your location');
             props.history.push('/login');
             return false;

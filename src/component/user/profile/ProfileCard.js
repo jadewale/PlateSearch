@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import {viewLicense, sendMessage, receiveMessage, openModal, closeModal} from "../../../actions/userActions";
-import { Widget } from 'react-chat-widget';
+import { Widget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import firebase from 'firebase';
 let chatId = '';
 
@@ -64,11 +64,19 @@ class  SearchBox extends React.Component {
         nextProps.userMessage.map((data) => {
           if(data) {
             let arrayType = Object.keys(data);
-            arrayType.map((objData) => {
+            arrayType.map((objData, index) => {
+                if( index === arrayType.length - 1) {
+                    if(chatId === data[objData].message.sender ) {
+                      addResponseMessage(data[objData].message.message);
+                    }
+                  console.log(data[objData].message.message, 'last message', data[objData].message.sender);
+                }
               toast(data[objData].message.message, {autoClose: 4000});
+
             });
           }
         })
+
       }
     }
 
@@ -106,8 +114,6 @@ class  SearchBox extends React.Component {
     triggerChat = (user) => {
         console.log('User', user);
         chatId = user;
-        alert(chatId);
-        debugger;
         this.setState({chat: 'block'});
     };
 
