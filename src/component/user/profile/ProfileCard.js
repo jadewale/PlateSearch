@@ -56,26 +56,27 @@ class  SearchBox extends React.Component {
 
     componentWillMount () {
         this.props.license();
+
     };
 
     componentWillReceiveProps(nextProps) {
-       /* if(nextProps.userMessage !== this.props.userMessage) {
-            return;
-            nextProps.userMessage.map((data) => {
-                if(data) {
-
-                    let arrayType = Object.keys(data);
-                    arrayType.map((objData) => {
-                        toast(data[objData].message.message, {autoClose: 1000});
-                    });
-                }
-            })
-        }*/
+      if(nextProps.userMessage !== this.props.userMessage) {
+        nextProps.userMessage.map((data) => {
+          if(data) {
+            let arrayType = Object.keys(data);
+            arrayType.map((objData) => {
+              toast(data[objData].message.message, {autoClose: 4000});
+            });
+          }
+        })
+      }
     }
 
     componentDidMount() {
 
         if(this.props.user.email) {
+
+          this.props.receiveMessage(this.props.user.email.replace(/[^\w\s]/gi, ''));
            // setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 10000);
         } else{
 
@@ -105,12 +106,13 @@ class  SearchBox extends React.Component {
     triggerChat = (user) => {
         console.log('User', user);
         chatId = user;
+        alert(chatId);
+        debugger;
         this.setState({chat: 'block'});
-
     };
 
     handleNewUserMessage = (newMessage) => {
-        this.props.sendMessage(chatId, { message: newMessage, user: chatId});
+        this.props.sendMessage(chatId, { message: newMessage, user: chatId, sender: this.props.user.email });
     };
 
     addNewMessage= (message) => {

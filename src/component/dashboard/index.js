@@ -79,17 +79,6 @@ class Dashboard extends React.Component {
         if(nextProps.userData !== this.props.userData) {
             this.props.history.push('/dashboard/admin');
         }
-
-        if(nextProps.userMessage !== this.props.userMessage) {
-            nextProps.userMessage.map((data) => {
-                if(data) {
-                    let arrayType = Object.keys(data);
-                    arrayType.map((objData) => {
-                        toast(data[objData].message.message, {autoClose: 4000});
-                    });
-                }
-            })
-        }
     }
 
     getGeo = (coors) => {
@@ -109,7 +98,7 @@ class Dashboard extends React.Component {
 
     componentDidMount(){
         if(this.props.user.email) {
-             setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 2000);
+             // setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 2000);
         } else{
 
         }
@@ -126,7 +115,6 @@ class Dashboard extends React.Component {
             this.props.messages(data.val());
         })
     };
-
 
     render () {
         return (

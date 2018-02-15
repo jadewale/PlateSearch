@@ -1,5 +1,5 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-
+import { call, put, take,  takeEvery, takeLatest } from 'redux-saga/effects';
+import { eventChannel } from 'redux-saga';
 import {
     googleSignIn as googleAPI, facebookSignIn as facebookAPI,
     createLicenseData as createLicenseAPI, viewLicenses as viewLicenseAPI,
@@ -100,10 +100,19 @@ function* sendMessageSaga(action) {
     }
 }
 
+
 function* receiveMessageSaga(action) {
     try {
+            debugger;
             const receiveMessage = yield call(receiveMessageAPI, action.id);
-            yield put(receiveMessageSuccess(receiveMessage));
+
+            while(true) {
+                const value = yield take(receiveMessage);
+                debugger;
+                yield put(receiveMessageSuccess(value));
+            }
+
+
     } catch (e) {
 
     }

@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { eventChannel } from 'redux-saga';
 require('firebase/firestore');
 
 const config = {
@@ -190,12 +191,34 @@ export function sendMessage(message, id) {
     })
 }
 
+function createSocketChannel (userChat) {
+
+  return eventChannel( emit => {
+
+    const receiveHandler = (event) => {
+      emit(event);
+    }
+
+    userChat.on('value', (data) => {
+        debugger;
+      receiveHandler(data.val());
+    })
+
+    const unsubscribe = () => {
+
+    }
+
+    return unsubscribe
+  })
+}
+
 export function receiveMessage(id) {
     return new Promise((resolve, reject) => {
         let userChat = firebase.database().ref(`messages/${id.replace(/[^\w\s]/gi, '')}`);
-        userChat.on('value', (data) => {
+        /*userChat.on('value', (data) => {
             resolve(data.val());
-        })
+        }) */
+        resolve(createSocketChannel(userChat));
     })
 }
 
