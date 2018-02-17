@@ -24,7 +24,7 @@ function geocodeLatLng(geocoder, value, props) {
   geocoder.geocode({'location': latlng}, function (results, status) {
     if (status === 'OK') {
       if (results[0]) {
-        if(results[0].formatted_address.match(/(\sLagos,\s)/g)) {
+        if(results[0].formatted_address.match(/(\sUK)/g)) {
             alert('You Have authorized access due to your location');
             return;
         } else{
@@ -70,6 +70,7 @@ class Dashboard extends React.Component {
             geolocation.getCurrentPosition((position) => {
                 resolve(position);
             }, () => {
+                debugger;
               alert('You need to enable geolocation to use the app');
               this.props.history.push('/login');
                 // reject(new Error('Permission denied'));
