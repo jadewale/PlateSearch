@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
                 resolve(position);
             }, () => {
               alert('You need to enable geolocation to use the app');
-              props.history.push('/login');
+              this.props.history.push('/login');
                 // reject(new Error('Permission denied'));
             });
         });
