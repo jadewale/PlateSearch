@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => (
     <header className="main-header">
-        <a href="../../index2.html" className="logo">
+        <a href="#" className="logo">
             <span className="logo-mini"><b>A</b>LT</span>
             <span className="logo-lg"><b>Plate</b>Me</span>
         </a>

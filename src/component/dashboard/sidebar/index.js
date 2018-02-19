@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-let menuObject = [{menu: 'Dashboard', children: ['register', 'search'], id: 1}];
+let menuObject = [{menu: 'Dashboard', children: ['Register', 'Search'], id: 1}];
 
 function generateMenu(id) {
     menuObject = menuObject.map((data) => {

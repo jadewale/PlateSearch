@@ -24,7 +24,7 @@ function geocodeLatLng(geocoder, value, props) {
   geocoder.geocode({'location': latlng}, function (results, status) {
     if (status === 'OK') {
       if (results[0]) {
-        if(results[0].formatted_address.match(/(\sUK)/g)) {
+        if(true || results[0].formatted_address.match(/(\sUK)/g)) {
             alert('You Have authorized access due to your location');
             return;
         } else{
@@ -42,12 +42,21 @@ function geocodeLatLng(geocoder, value, props) {
   });
 }
 
+const Comp = () => (
+  <div>
+    <span>Welcome To License, You have successfully Registered your data</span>
+  </div>
+)
+
 class Dashboard extends React.Component {
 
 
 
     constructor(props) {
         super(props);
+        this.state = {
+          verified: false,
+        };
 
         if(localStorage.getItem('admin')) {
             setTimeout(()=> {document.getElementById('widget').style.display = 'none';}, 3000);
@@ -70,7 +79,6 @@ class Dashboard extends React.Component {
             geolocation.getCurrentPosition((position) => {
                 resolve(position);
             }, () => {
-                debugger;
               alert('You need to enable geolocation to use the app');
               this.props.history.push('/login');
                 // reject(new Error('Permission denied'));
@@ -79,9 +87,17 @@ class Dashboard extends React.Component {
         return location;
     };
 
+
     componentWillReceiveProps(nextProps) {
         if(nextProps.userData !== this.props.userData) {
             this.props.history.push('/dashboard/admin');
+        }else {
+          if(nextProps.user.verified == true ) {
+            setTimeout(()=> { this.props.history.push('/dashboard/Search');}, 3000)
+
+          }else {
+            this.setState({verified : true});
+          }
         }
     }
 
@@ -120,6 +136,7 @@ class Dashboard extends React.Component {
         })
     };
 
+
     render () {
         return (
             <div className="skin-blue sidebar-mini wrapper">
@@ -149,8 +166,10 @@ class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <div className="box-body">
-                                <Route path="/dashboard/register" component={RegisterForm}/>
-                                <Route path="/dashboard/search" component={ProfileCard}/>
+                              {this.state.verified ?
+                                <Route path="/dashboard/Register" component={RegisterForm}/> : <Comp/>
+                              }
+                                <Route path="/dashboard/Search" component={ProfileCard}/>
                                 <Route path="/dashboard/admin" component={AdminCard} />
                             </div>
                             <div className="box-footer">
