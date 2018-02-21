@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-
+import {openChat} from '../../../actions/userActions'
 
 const NewMessage = ({name, message, data, onClick}) => {
   return (
@@ -27,7 +27,7 @@ class Header extends React.Component {
   }
 
   openChatUser = (data) => {
-    console.log('Clicked ', data);
+    this.props.open('block', data);
   };
 
   render() {
@@ -81,4 +81,10 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps, null)(Header);
+function mapDispatchToProps (dispatch) {
+  return {
+    open: (show, user) => dispatch(openChat(show, user))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

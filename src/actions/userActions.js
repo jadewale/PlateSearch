@@ -18,6 +18,7 @@ import {
     DEACTIVATE_ACCOUNT,
     DEACTIVATED_ACCOUNT,
     DISPLAY_MESSAGES,
+    OPEN_CHAT,
 } from "./constants";
 
 export function displayMessages (messages) {
@@ -164,5 +165,13 @@ export function deactivatedAccounts(accounts) {
     return {
         type: DEACTIVATED_ACCOUNT,
         accounts,
+    }
+}
+
+export function openChat(chat, user) {
+    return {
+        type: OPEN_CHAT,
+        chat,
+        user
     }
 }

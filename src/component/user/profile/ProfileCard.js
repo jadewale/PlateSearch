@@ -39,6 +39,58 @@ const ProfileCard = ({name, model, license, email, openChat, profile}) => (
 
 class  SearchBox extends React.Component {
 
+    searchInput = (evt) => {
+       this.setState({searchWord: evt.target.value});
+    };
+    triggerChat = (user) => {
+
+        chatId = user;
+        this.setState({chat: 'block'});
+    };
+    handleNewUserMessage = (newMessage) => {
+        this.props.sendMessage(chatId, { message: newMessage, user: chatId, sender: this.props.user.email });
+    };
+    addNewMessage= (message) => {
+        this.handleNewUserMessage('Hi');
+    };
+    notify = () => {
+        toast("Wow so easy !", { autoClose: 5000 });
+    };
+    onFormSubmit = (evt) => {
+      evt.preventDefault();
+      this.triggerSearch(); // searchWord
+    };
+    triggerSearch = () => {
+
+        if(this.props.user.verified !== true) {
+            if(this.props.user.verified === 'deactivated') {
+
+                toast("Your account has been deactivated", {autoClose: 5000});
+            } else {
+                toast("Your account has not been verified", {autoClose: 5000});
+            }
+        } else {
+
+
+            let data = this.state.searchWord;
+            if (data) {
+                let dataFound = this.props.licenseData.filter((obj) => {
+                    return obj.data().plate === data
+                });
+
+                this.setState({searchData: dataFound});
+            } else {
+                toast("Please Enter a word to search", {autoClose: 5000});
+            }
+        }
+    };
+    viewProfile = (name, model, license, email) => {
+        this.props.openModal();
+    };
+    closeModal = () => {
+        this.setState({showModal: false});
+    };
+
     constructor(props) {
         super(props);
         this.state ={
@@ -53,13 +105,25 @@ class  SearchBox extends React.Component {
         }
     }
 
-
     componentWillMount () {
         this.props.license();
 
     };
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.chatId !== this.props.chatId) {
+            this.props.userMessage.map((data) => {
+              if (data) {
+                let arrayType = Object.keys(data);
+                arrayType.map((objData, index) => {
+                  if ((chatId === data[objData].message.sender) || (nextProps.chatId === data[objData].message.sender )) {
+                    addResponseMessage(data[objData].message.message);
+                  }
+                })
+              }
+            })
+        }
+
       let presentMessage = {};
       if(nextProps.userMessage !== this.props.userMessage) {
         nextProps.userMessage.map((data) => {
@@ -67,7 +131,7 @@ class  SearchBox extends React.Component {
               let arrayType = Object.keys(data);
               arrayType.map((objData, index) => {
                 if (index === arrayType.length - 1) {
-                  if (chatId === data[objData].message.sender) {
+                  if ((chatId === data[objData].message.sender) || (this.props.chatId === data[objData].message.sender )) {
                     addResponseMessage(data[objData].message.message);
                   }
                   if (this.state.chat != 'block') {
@@ -93,70 +157,6 @@ class  SearchBox extends React.Component {
         }
     };
 
-
-
-
-    searchInput = (evt) => {
-       this.setState({searchWord: evt.target.value});
-    };
-
-
-    triggerChat = (user) => {
-
-        chatId = user;
-        this.setState({chat: 'block'});
-    };
-
-    handleNewUserMessage = (newMessage) => {
-        this.props.sendMessage(chatId, { message: newMessage, user: chatId, sender: this.props.user.email });
-    };
-
-    addNewMessage= (message) => {
-        this.handleNewUserMessage('Hi');
-    };
-
-    notify = () => {
-        toast("Wow so easy !", { autoClose: 5000 });
-    };
-
-    onFormSubmit = (evt) => {
-      evt.preventDefault();
-      this.triggerSearch(); // searchWord
-    };
-
-    triggerSearch = () => {
-
-        if(this.props.user.verified !== true) {
-            if(this.props.user.verified === 'deactivated') {
-
-                toast("Your account has been deactivated", {autoClose: 5000});
-            } else {
-                toast("Your account has not been verified", {autoClose: 5000});
-            }
-        } else {
-
-
-            let data = this.state.searchWord;
-            if (data) {
-                let dataFound = this.props.licenseData.filter((obj) => {
-                    return obj.data().plate === data
-                });
-
-                this.setState({searchData: dataFound});
-            } else {
-                toast("Please Enter a word to search", {autoClose: 5000});
-            }
-        }
-    };
-
-    viewProfile = (name, model, license, email) => {
-        this.props.openModal();
-    };
-
-    closeModal = () => {
-        this.setState({showModal: false});
-    };
-
     render () {
         return (
             <div className="row">
@@ -170,8 +170,8 @@ class  SearchBox extends React.Component {
                             </span>
                         </div>
                     </form>
-                    <div style={{display: this.state.chat || this.props.chat}}>
-                        <Widget addUserMessage={this.addNewMessage} handleNewUserMessage={this.handleNewUserMessage} />
+                    <div style={{display: this.props.chat || this.state.chat }}>
+                        <Widget title={this.props.chatId || chatId} addUserMessage={this.addNewMessage} handleNewUserMessage={this.handleNewUserMessage} />
                     </div>
                 </div>
                 <div>
@@ -196,7 +196,8 @@ function mapStateToProps(state) {
         licenseData: state.user.licenses,
         user: state.user.userProfile,
         userMessage: state.user.messages,
-        chat: state.user.chat
+        chat: state.user.chat,
+        chatId: state.user.chatId,
     }
 }
 
