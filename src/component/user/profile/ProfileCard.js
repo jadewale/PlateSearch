@@ -107,6 +107,7 @@ class  SearchBox extends React.Component {
 
             this.setState({foundUser: dataFound, display: []});
         } */
+
        this.setState({searchWord: evt.target.value});
     };
 
@@ -130,8 +131,9 @@ class  SearchBox extends React.Component {
         toast("Wow so easy !", { autoClose: 5000 });
     };
 
-    onFormSubmit = () => {
-
+    onFormSubmit = (evt) => {
+      evt.preventDefault();
+      this.triggerSearch(); // searchWord
     };
 
     triggerSearch = () => {
