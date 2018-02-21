@@ -17,7 +17,15 @@ import {
     CLOSE_MODAL,
     DEACTIVATE_ACCOUNT,
     DEACTIVATED_ACCOUNT,
+    DISPLAY_MESSAGES,
 } from "./constants";
+
+export function displayMessages (messages) {
+  return {
+      type: DISPLAY_MESSAGES,
+      messages,
+  }
+}
 
 export function showLoader() {
     return {

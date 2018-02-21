@@ -16,6 +16,7 @@ import {
     OPEN_MODAL,
     CLOSE_MODAL,
     DEACTIVATED_ACCOUNT,
+    DISPLAY_MESSAGES,
 } from "../actions/constants";
 
 const initialState = {
@@ -29,6 +30,8 @@ const initialState = {
     userLicense: [],
     modal: false,
     deactivatedAcc: [],
+    messageDisplay: [],
+    chat: 'none',
 };
 
 export default function userReducer(state = initialState, action) {
@@ -80,6 +83,9 @@ export default function userReducer(state = initialState, action) {
 
         case CLOSE_MODAL:
             return {...state, modal:false };
+
+      case DISPLAY_MESSAGES:
+          return { ...state, messageDisplay: action.messages };
 
         default:
             return state;

@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
-import {viewLicense, sendMessage, receiveMessage, openModal, closeModal} from "../../../actions/userActions";
+import {viewLicense, sendMessage, receiveMessage, openModal, closeModal, displayMessages} from "../../../actions/userActions";
 import { Widget, addResponseMessage, addUserMessage } from 'react-chat-widget';
 import firebase from 'firebase';
 let chatId = '';
@@ -60,34 +60,36 @@ class  SearchBox extends React.Component {
     };
 
     componentWillReceiveProps(nextProps) {
+      let presentMessage = {};
       if(nextProps.userMessage !== this.props.userMessage) {
         nextProps.userMessage.map((data) => {
-          if(data) {
-            let arrayType = Object.keys(data);
-            arrayType.map((objData, index) => {
-                if( index === arrayType.length - 1) {
-                    if(chatId === data[objData].message.sender ) {
-                      addResponseMessage(data[objData].message.message);
-                    }
-                  console.log(data[objData].message.message, 'last message', data[objData].message.sender);
+            if (data) {
+              let arrayType = Object.keys(data);
+              arrayType.map((objData, index) => {
+                if (index === arrayType.length - 1) {
+                  if (chatId === data[objData].message.sender) {
+                    addResponseMessage(data[objData].message.message);
+                  }
+                  if (this.state.chat != 'block') {
+                    toast(data[objData].message.message, {autoClose: 4000});
+                  }
                 }
-              toast(data[objData].message.message, {autoClose: 4000});
 
-            });
-          }
+                if(this.props.user.email != data[objData].message.sender)
+                    presentMessage[data[objData].message.sender] = data[objData];
+              });
+            }
         })
 
+        this.props.displayMessages(presentMessage);
       }
     }
 
     componentDidMount() {
-
         if(this.props.user.email) {
-
           this.props.receiveMessage(this.props.user.email.replace(/[^\w\s]/gi, ''));
            // setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 10000);
         } else{
-
         }
     };
 
@@ -95,25 +97,12 @@ class  SearchBox extends React.Component {
 
 
     searchInput = (evt) => {
-       /* if (!evt.target.value) {
-            // this.props.licenseData
-            this.setState({search: false, foundUser: [], display: []});
-        }
-        else{
-            this.setState({search: true});
-            let dataFound = this.props.licenseData.filter((obj) => {
-                return obj.data().plate == evt.target.value
-            });
-
-            this.setState({foundUser: dataFound, display: []});
-        } */
-
        this.setState({searchWord: evt.target.value});
     };
 
 
     triggerChat = (user) => {
-        console.log('User', user);
+
         chatId = user;
         this.setState({chat: 'block'});
     };
@@ -123,7 +112,6 @@ class  SearchBox extends React.Component {
     };
 
     addNewMessage= (message) => {
-        console.log('hello', message);
         this.handleNewUserMessage('Hi');
     };
 
@@ -138,7 +126,6 @@ class  SearchBox extends React.Component {
 
     triggerSearch = () => {
 
-        console.log(this.props.user);
         if(this.props.user.verified !== true) {
             if(this.props.user.verified === 'deactivated') {
 
@@ -183,7 +170,7 @@ class  SearchBox extends React.Component {
                             </span>
                         </div>
                     </form>
-                    <div style={{display: this.state.chat}}>
+                    <div style={{display: this.state.chat || this.props.chat}}>
                         <Widget addUserMessage={this.addNewMessage} handleNewUserMessage={this.handleNewUserMessage} />
                     </div>
                 </div>
@@ -209,6 +196,7 @@ function mapStateToProps(state) {
         licenseData: state.user.licenses,
         user: state.user.userProfile,
         userMessage: state.user.messages,
+        chat: state.user.chat
     }
 }
 
@@ -219,6 +207,7 @@ function mapDispatchToProps(dispatch) {
         receiveMessage: (id) =>  dispatch(receiveMessage(id)),
         openModal: () => dispatch(openModal()),
         closeModal: () => dispatch(closeModal()),
+        displayMessages: (messages) => dispatch(displayMessages(messages)),
     }
 }
 
