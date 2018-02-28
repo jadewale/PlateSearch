@@ -35,7 +35,7 @@ class Login extends React.Component {
                     <a href="#"><b>{this.state.admin ? 'Plate': 'Plate'}</b>ME</a>
                 </div>
                 <div className="login-box-body">
-                    <p className="login-box-msg">Sign in to start your session</p>
+                    <p className="login-box-msg">Welcome to PlateMe by Oliver Cole. Please Sign in to start your session</p>
 
 
                         {this.state.admin ?
@@ -66,9 +66,9 @@ class Login extends React.Component {
 
 
                     <div className="social-auth-links text-center">
-                        <p>- OR -</p>
                         <button onClick={this.facebookSign} className="btn btn-block btn-social btn-facebook btn-flat"><i className="fa fa-facebook"></i> Sign in using
                             Facebook</button>
+                            <p>- OR -</p>
                         <button  onClick={this.googleSign} className="btn btn-block btn-social btn-google btn-flat"><i className="fa fa-google-plus"></i> Sign in using
                             Google+</button>
                     </div>

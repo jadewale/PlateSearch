@@ -44,7 +44,7 @@ function geocodeLatLng(geocoder, value, props) {
 
 const Comp = () => (
   <div>
-    <span>Welcome To License, You have successfully Registered your data</span>
+    <span>Welcome To PlateMe, You have successfully Registered your data</span>
   </div>
 )
 
@@ -87,15 +87,21 @@ class Dashboard extends React.Component {
         return location;
     };
 
+   pushToRouter =() => {
+       this.props.history.push('/dashboard/Search');
+   }
+
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.userData !== this.props.userData) {
             this.props.history.push('/dashboard/admin');
         }else {
           if(nextProps.user.verified == true ) {
-            setTimeout(()=> { this.props.history.push('/dashboard/Search');}, 3000)
+            debugger;
+            setTimeout(()=> this.pushToRouter(), 2000)
 
           }else {
+            
             this.setState({verified : true});
           }
         }
@@ -166,9 +172,9 @@ class Dashboard extends React.Component {
                                 </div>
                             </div>
                             <div className="box-body">
-                              {this.state.verified ?
-                                <Route path="/dashboard/Register" component={RegisterForm}/> : <Comp/>
-                              }
+                            
+                                <Route path="/dashboard/Register" component={RegisterForm}/>
+                              
                                 <Route path="/dashboard/Search" component={ProfileCard}/>
                                 <Route path="/dashboard/admin" component={AdminCard} />
                             </div>

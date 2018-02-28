@@ -21,7 +21,7 @@ const SideBar = ({photo}) => (
         <section className="sidebar">
             <div className="user-panel">
                 <div className="pull-left image">
-                  <img src={photo} className="img-circle" alt="User Image"/>
+                  <img src={photo || 'http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png'} className="img-circle" alt="User Image"/>
                 </div>
                 <div className="pull-left info">
                     <p></p>

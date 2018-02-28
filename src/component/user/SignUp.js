@@ -13,7 +13,7 @@ class SignUp extends React.Component {
     this.setState({error: ''})
     let email = this.state.form.email
     let password = this.state.form.password
-    if ((email && email === 'jbadewale@yahoo.com') && (password && password === 'test')) {
+    if ((email && email === 'oliver@admin.com') && (password && password === 'password')) {
       localStorage.setItem('admin', 'Logged')
       this.props.history.push('/dashboard')
     } else {
