@@ -12,7 +12,7 @@ import {GOOGLE_SIGN, FACEBOOKSUCCESS, FACEBOOK_SIGN,
     GOOGLESUCCESS,
     CREATE_LICENSE, READ_LICENSE, VIEW_LICENSE_SUCCESS, FETCH_ADMIN_DATA, APPROVE_USER,
     SEND_MESSAGE, RECEIVE_MESSAGE,RECEIVE_MESSAGE_SUCCESS, DEACTIVATE_ACCOUNT,
-} from "../actions/constants";
+} from "../constants";
 import {viewLicenseSuccess,
     fetchAdminDataSuccess,
     receiveMessageSuccess,

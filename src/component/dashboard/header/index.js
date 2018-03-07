@@ -1,26 +1,25 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {openChat} from '../../../actions/userActions'
+import { connect } from 'react-redux';
+import { openChat } from '../../../actions/userActions';
 
-const NewMessage = ({name, message, data, onClick}) => {
-  return (
-    <li>
-        <a onClick={ ()=> {onClick(data)}} href="#">
-          <div  className="pull-left">
-            <img src="https://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" class="img-circle" alt="User Image"/>
-          </div>
-          <h4>
-            {name}
-            <small><i className="fa fa-clock-o"></i> Unavailable</small>
-          </h4>
-          <p>{message}</p>
-        </a>
-    </li>
-  )
-}
+const NewMessage = ({
+  name, message, data, onClick,
+}) => (
+  <li>
+    <a onClick={() => { onClick(data); }} href="#">
+      <div className="pull-left">
+        <img src="https://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" className="img-circle" alt="User Image" />
+      </div>
+      <h4>
+        {name}
+        <small><i className="fa fa-clock-o"></i> Unavailable</small>
+      </h4>
+      <p>{message}</p>
+    </a>
+  </li>
+);
 
 class Header extends React.Component {
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.messages !== this.props.messages) {
     }
@@ -31,11 +30,11 @@ class Header extends React.Component {
   };
 
   render() {
-    return(
+    return (
       <header className="main-header">
         <a href="#" className="logo">
           <span className="logo-mini"><b>A</b>LT</span>
-          <span className="logo-lg"><b>Plate</b>Me</span>
+          <span className="logo-lg"><b>Wole</b>Me</span>
         </a>
         <nav className="navbar navbar-static-top">
           <a href="#" className="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -72,19 +71,18 @@ class Header extends React.Component {
       </header>
     );
   }
-
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     messages: state.user.messageDisplay,
-  }
+  };
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-    open: (show, user) => dispatch(openChat(show, user))
-  }
+    open: (show, user) => dispatch(openChat(show, user)),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

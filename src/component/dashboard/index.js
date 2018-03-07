@@ -97,7 +97,6 @@ class Dashboard extends React.Component {
             this.props.history.push('/dashboard/admin');
         }else {
           if(nextProps.user.verified == true ) {
-            debugger;
             setTimeout(()=> this.pushToRouter(), 2000)
 
           }else {
@@ -174,6 +173,7 @@ class Dashboard extends React.Component {
                             <div className="box-body">
                             
                                 <Route path="/dashboard/Register" component={RegisterForm}/>
+                              <Route path="/dashboard/Registerd" component={Comp}/>
                               
                                 <Route path="/dashboard/Search" component={ProfileCard}/>
                                 <Route path="/dashboard/admin" component={AdminCard} />

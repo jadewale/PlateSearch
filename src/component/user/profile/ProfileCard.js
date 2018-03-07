@@ -84,6 +84,10 @@ class  SearchBox extends React.Component {
             }
         }
     };
+    toggle = (evt) => {
+      debugger;
+    }
+
     viewProfile = (name, model, license, email) => {
         this.props.openModal();
     };
@@ -155,6 +159,7 @@ class  SearchBox extends React.Component {
            // setTimeout( ()=> { this.receiveNotifications(this.props.user.email.replace(/[^\w\s]/gi, ''))}, 10000);
         } else{
         }
+
     };
 
     render () {
@@ -171,7 +176,7 @@ class  SearchBox extends React.Component {
                         </div>
                     </form>
                     <div style={{display: this.props.chat || this.state.chat }}>
-                        <Widget title={this.props.chatId || chatId} addUserMessage={this.addNewMessage} handleNewUserMessage={this.handleNewUserMessage} />
+                        <Widget  ref={(input) => { this.widgetInput = input; }} /> title={this.props.chatId || chatId} addUserMessage={this.addNewMessage} handleNewUserMessage={this.handleNewUserMessage} />
                     </div>
                 </div>
                 <div>

@@ -1,8 +1,10 @@
 export const SIGN_UP = 'SIGN_UP';
-export const LOGIN_USER ='LOGIN_USER';
-export const FETCH_USERS ='FETCH_USERS';
+export const LOGIN_USER = 'LOGIN_USER';
+export const FETCH_USERS = 'FETCH_USERS';
 export const GOOGLE_SIGN = 'GOOGLE_SIGN';
 export const FACEBOOK_SIGN = 'FACEBOOK_SIGN';
+export const GET_WEATHER = 'GET_WEATHER';
+export const GET_WEATHER_SUCCESS = 'GET_WEATHER_SUCCESS';
 export const FACEBOOKSUCCESS = 'FACEBOOKSUCCESS';
 export const GOOGLESUCCESS = 'GOOGLESUCCESS';
 export const CREATE_LICENSE = 'CREATE_LICENSE';

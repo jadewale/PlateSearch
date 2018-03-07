@@ -18,7 +18,7 @@ import {
     DEACTIVATED_ACCOUNT,
     DISPLAY_MESSAGES,
     OPEN_CHAT
-} from "../actions/constants";
+} from "./constants";
 
 const initialState = {
     userProfile: {},
