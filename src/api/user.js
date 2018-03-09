@@ -1,10 +1,12 @@
 import firebase from 'firebase';
+import axios from 'axios';
 import { eventChannel } from 'redux-saga';
 import { secretKey } from '../secret';
 require('firebase/firestore');
 
-const config = secretKey();
-firebase.initializeApp(config);
+//const config = secretKey();
+//firebase.initializeApp(config);
+
 
 export function googleSignIn() {
   return new Promise((resolve, reject) => {
@@ -52,7 +54,7 @@ export function googleSignIn() {
       const credential = error.credential;
       // ...
     });
-  })
+  });
 }
 
 export function facebookSignIn() {
@@ -270,8 +272,9 @@ export function deactivateUser(id) {
   });
 }
 
-export function getWeather () {
-  
+export function getWeather() {
+  const url = 'http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=f7a1ecd069a1053b3f7e0c272f1b2519';
+  return axios.get(url).then((response) => (response));
 }
 
 export function signIn(email, password) {

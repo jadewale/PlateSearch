@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "firebase": "^4.9.1",
+    "history": "^4.7.2",
     "immutable": "^3.8.2",
     "react": "^16.2.0",
     "react-chat-widget": "^2.1.2",
@@ -38,6 +39,7 @@
     "eslint-plugin-import": "^2.9.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-redux-saga": "^0.6.0"
+    "eslint-plugin-redux-saga": "^0.6.0",
+    "redux-devtools-extension": "^2.13.2"
   }
 }

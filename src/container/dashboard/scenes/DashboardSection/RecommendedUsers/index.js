@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const RecomendedUser = () => (
+const RecomendedUser = ({ users, openChat }) => (
   <div className="box box-danger">
     <div className="box-header with-border">
       <h3 style={{ fontSize: '8px' }} className="box-title">Recommended Members</h3>
 
       <div className="box-tools pull-right">
-        <span className="label label-danger">8 New Members</span>
+        <span className="label label-danger">{`${Object.keys(users).length} New Members`}</span>
         <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
         </button>
         <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
@@ -15,11 +16,14 @@ const RecomendedUser = () => (
     </div>
     <div className="box-body no-padding">
       <ul className="users-list clearfix">
-        <li>
-          <img className="img-circle" src="http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" alt="User" />
-          <a className="users-list-name" href="/dashboard">Nadia</a>
-          <span className="users-list-date">15 Jan</span>
-        </li>
+        {Object.keys(users).map((data) => (
+          <li key={data} onClick={() => { openChat(data); }}>
+            <img className="img-circle" src="http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" alt="User" />
+            <span className="users-list-name" >{users[data].displayName || users[data].email}</span>
+            <span className="users-list-date">{ users[data].license }</span>
+          </li>
+        ))}
+
       </ul>
     </div>
     <div className="box-footer text-center">
@@ -27,5 +31,10 @@ const RecomendedUser = () => (
     </div>
   </div>
 );
+
+RecomendedUser.propTypes = {
+  openChat: PropTypes.func.isRequired,
+  users: PropTypes.object.isRequired,
+};
 
 export default RecomendedUser;

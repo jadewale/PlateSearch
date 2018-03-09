@@ -24,6 +24,10 @@ const SideBar = ({ photoUrl }) => (
       </form>
       <ul id="widget" className="sidebar-menu" data-widget="tree">
         <li className="header">MAIN NAVIGATION</li>
+        <li className="header">
+          <input type="checkbox" />
+          <span className="col-sm-offset-1">Visible</span>
+        </li>
       </ul>
     </section>
   </aside>

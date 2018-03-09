@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Maps from './Maps';
-import RecommendedUsers from './RecommendedUsers';
+import FormLicense from './FormLicense';
+import SearchLicense from './SearchLicense';
 
-const DashboardSection = ({ coords, users, openChat }) => (
+const UnverifiedUser = () => (
+  <span>Please hold on while we verify your account.</span>
+);
+
+const LicenseSection = ({
+  verified, onChangeFields, onFile, onSubmit, email,
+}) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
       <div className="box-header with-border">
-        <h3 className="box-title">Title</h3>
+        <h3 className="box-title">Files</h3>
 
         <div className="box-tools pull-right">
           <button
@@ -27,15 +33,10 @@ const DashboardSection = ({ coords, users, openChat }) => (
       <div className="box-body">
         <div className="row">
           <div className="col-md-8">
-            <Maps
-              coords={coords}
-              containerElement={<div style={{ height: '400px' }} />}
-              mapElement={<div style={{ height: '100%' }} />}
-              isMarkerShown
-            />
+            <FormLicense onChangeFields={onChangeFields} email={email} onFile={onFile} onSubmit={onSubmit} />
           </div>
           <div className="col-md-4">
-            <RecommendedUsers openChat={openChat} users={users} />
+            {verified ? <SearchLicense /> : <UnverifiedUser />}
           </div>
           <div className="col-md-6">
           </div>
@@ -47,14 +48,12 @@ const DashboardSection = ({ coords, users, openChat }) => (
   </section>
 );
 
-DashboardSection.propTypes = {
-  coords: PropTypes.object.isRequired,
-  openChat: PropTypes.func.isRequired,
-  users: PropTypes.object,
+LicenseSection.propTypes = {
+  email: PropTypes.string.isRequired,
+  onChangeFields: PropTypes.func.isRequired,
+  onFile: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  verified: PropTypes.bool.isRequired,
 };
 
-DashboardSection.defaultProps = {
-  users: {},
-};
-
-export default DashboardSection;
+export default LicenseSection;

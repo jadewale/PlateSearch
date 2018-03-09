@@ -1,24 +1,27 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-
-import { googleSignIn as googleAPI, facebookSignIn as facebookAPI } from '../../api/user';
-
-import { GOOGLE_SIGN, FACEBOOK_SIGN } from '../../constants';
-
+import { push } from 'react-router-redux';
+import { authenticator as authApi } from '../../api/index';
+import PushNotification from '../../api/pushNotifications';
+import { GOOGLE_SIGN, FACEBOOK_SIGN, FACEBOOK, GOOGLE } from '../../constants';
 import { googleSuccess, facebookSuccess } from './actions';
 
 function* googleSign() {
   try {
-    const google = yield call(googleAPI);
-    yield put(googleSuccess(google));
+    const response = yield call(authApi, GOOGLE);
+    if (response.success) {
+      yield put(googleSuccess(response));
+      yield put(push('/dashboard'));
+    }
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }
 }
 
+
 function* facebookSign() {
   try {
-    const facebook = yield call(facebookAPI);
-    yield put(facebookSuccess(facebook));
+    const response = yield call(authApi, FACEBOOK);
+    if (response.success) { yield put(facebookSuccess(response)); }
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }

@@ -1,6 +1,7 @@
 export const SIGN_UP = 'SIGN_UP';
 export const LOGIN_USER = 'LOGIN_USER';
 export const FETCH_USERS = 'FETCH_USERS';
+export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
 export const GOOGLE_SIGN = 'GOOGLE_SIGN';
 export const FACEBOOK_SIGN = 'FACEBOOK_SIGN';
 export const GET_WEATHER = 'GET_WEATHER';
@@ -28,3 +29,12 @@ export const DEACTIVATE_ACCOUNT = 'DEACTIVATE_ACCOUNT';
 export const DEACTIVATED_ACCOUNT = 'DEACTIVATED_ACCOUNT';
 export const DISPLAY_MESSAGES = 'DISPLAY_MESSAGES';
 export const OPEN_CHAT = 'OPEN_CHAT';
+export const ADD_CHAT = 'ADD_CHAT';
+export const REMOVE_CHAT = 'REMOVE_CHAT';
+export const FACEBOOK = 'FACEBOOK';
+export const GOOGLE = 'GOOGLE';
+export const UPDATE_FIELDS = 'UPDATE_FIELDS';
+export const UPDATE_FILE = 'UPDATE_FILE';
+export const FETCH_USER_MESSAGE = 'FETCH_USER_MESSAGE';
+export const ADD_CHAT_MESSAGE = 'ADD_CHAT_MESSAGE';
+
