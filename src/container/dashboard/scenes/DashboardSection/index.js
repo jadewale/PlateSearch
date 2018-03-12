@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Route } from 'react-router-dom';
 import Maps from './Maps';
 import RecommendedUsers from './RecommendedUsers';
 

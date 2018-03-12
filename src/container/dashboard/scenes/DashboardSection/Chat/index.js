@@ -5,7 +5,7 @@ import ChatHeader from './ChatBox/ChatHeader';
 import ChatFooter from './ChatBox/ChatFooter';
 
 const Chat = ({
-  count, input, messages, onChat, sendChat, onRemove,
+  count, input, messages, name, onChat, sendChat, onRemove,
 }) => (
   <div
     style={{
@@ -22,11 +22,19 @@ const Chat = ({
       </div>
       <div className="box-body">
         <div className="direct-chat-messages">
-          <ChatBox
-            data={messages || {
-              name: 'Jolaade', time: '27/01/2017', img: '', message: 'hello World',
-            }}
-          />
+          {
+            messages.map((obj) => (
+              <ChatBox
+                data={{
+                  name: obj.userProfile.displayName,
+                  time: '27/01/2017',
+                  photoURL: obj.userProfile.photoURL,
+                  message: obj.message,
+                  style: (obj.userProfile.displayName === name) ? 'right' : 'left',
+                }}
+              />
+            ))
+          }
         </div>
         <div className="direct-chat-contacts">
 
@@ -43,6 +51,7 @@ Chat.propTypes = {
   count: PropTypes.number.isRequired,
   input: PropTypes.string,
   messages: PropTypes.array.isRequired,
+  name: PropTypes.string.isRequired,
   onChat: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   sendChat: PropTypes.func.isRequired,

@@ -1,9 +1,11 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, take, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga'
 import { push } from 'react-router-redux';
 import { authenticator as authApi } from '../../api/index';
-import PushNotification from '../../api/pushNotifications';
-import { GOOGLE_SIGN, FACEBOOK_SIGN, FACEBOOK, GOOGLE } from '../../constants';
+import { getToken as getTokenAPI } from '../../api/pushNotifications';
+import { GOOGLE_SIGN, FACEBOOK_SIGN, FACEBOOK, GOOGLE, PUSH_NOTIFICATIONS } from '../../constants';
 import { googleSuccess, facebookSuccess } from './actions';
+import { dismissNotification, setNotification } from '../dashboard/actions';
 
 function* googleSign() {
   try {
@@ -27,8 +29,33 @@ function* facebookSign() {
   }
 }
 
+function* closeNotification() {
+  yield delay(10000);
+  yield put(dismissNotification());
+}
+
+function* registerPushNotification(action) {
+  try {
+    const response = yield call(getTokenAPI, action.id);
+    while (true) {
+      const value = yield take(response);
+      if (value.notification) {
+        yield put(setNotification(value.notification));
+        yield call(closeNotification);
+      }
+
+      if (value.token) {
+        debugger;
+      }
+    }
+  } catch (e) {
+    console.log(e); // eslint-disable-line no-console
+  }
+}
+
 
 export default [].concat(
   takeLatest(GOOGLE_SIGN, googleSign), // eslint-disable-line
   takeLatest(FACEBOOK_SIGN, facebookSign), // eslint-disable-line
+  takeLatest(PUSH_NOTIFICATIONS, registerPushNotification) // eslint-disable-line
 );

@@ -1,6 +1,8 @@
 import {
   ADD_CHAT, REMOVE_CHAT, GET_WEATHER, GET_WEATHER_SUCCESS, UPDATE_FIELDS,
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
+  PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
+  UPDATE_VISIBILITY,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -84,3 +86,55 @@ export function removeChat() {
     type: REMOVE_CHAT,
   };
 }
+
+export function registerPushNotification(id) {
+  return {
+    type: PUSH_NOTIFICATIONS,
+    id,
+  };
+}
+
+export function sendNotification(token, body) {
+  return {
+    type: SEND_NOTIFICATION,
+    token,
+    body,
+  };
+}
+
+export function setNotification(data) {
+  return {
+    type: SET_NOTIFICATION,
+    data,
+  };
+}
+
+export function dismissNotification() {
+  return {
+    type: DISMISS_NOTIFICATION,
+  };
+}
+
+export function updateStatusField(value) {
+  return {
+    type: UPDATE_STATUS_FIELD,
+    value,
+  };
+}
+
+export function updateStatus(id, status) {
+  return {
+    type: UPDATE_STATUS,
+    id,
+    status,
+  };
+}
+
+export function toggleVisibiliy(id, visible) {
+  return {
+    type: UPDATE_VISIBILITY,
+    id,
+    visible,
+  };
+}
+

@@ -1,10 +1,11 @@
 import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import {
-  ADD_CHAT, ADD_CHAT_MESSAGE, FETCH_USERS_SUCCESS, GET_WEATHER_SUCCESS, RECEIVE_MESSAGE_SUCCESS, REMOVE_CHAT,
-  SEND_MESSAGE,
+  ADD_CHAT, ADD_CHAT_MESSAGE, DISMISS_NOTIFICATION, FETCH_USERS_SUCCESS, GET_WEATHER_SUCCESS, RECEIVE_MESSAGE_SUCCESS,
+  REMOVE_CHAT,
+  SEND_MESSAGE, SET_NOTIFICATION,
   UPDATE_FIELDS,
-  UPDATE_FILE,
+  UPDATE_FILE, UPDATE_STATUS_FIELD,
 } from '../../constants';
 
 export function makeImmutable(val) {
@@ -84,10 +85,40 @@ export function users(state = Map(makeImmutable({})), action) {
   }
 }
 
+export function notification(state = Map(makeImmutable({})), action) {
+  switch (action.type) {
+    case SET_NOTIFICATION: {
+      const { message, userProfile: { displayName, email } } = JSON.parse(action.data.notification.body);
+      return state.setIn(['notif'], {
+        body: {
+          message,
+          displayName,
+          email,
+        },
+      });
+    }
+    case DISMISS_NOTIFICATION:
+      return state.setIn(['notif'], {});
+    default:
+      return state;
+  }
+}
+
+export function status(state = Map(makeImmutable({})), action) {
+  switch (action.type) {
+    case UPDATE_STATUS_FIELD:
+      return state.setIn(['update'], action.value);
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   weather,
   chat,
   messages,
+  notification,
   data,
   users,
+  status,
 });

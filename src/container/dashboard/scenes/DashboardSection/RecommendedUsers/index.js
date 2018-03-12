@@ -7,7 +7,7 @@ const RecomendedUser = ({ users, openChat }) => (
       <h3 style={{ fontSize: '8px' }} className="box-title">Recommended Members</h3>
 
       <div className="box-tools pull-right">
-        <span className="label label-danger">{`${Object.keys(users).length} New Members`}</span>
+        <span className="label label-danger">{`${Object.keys(users).length} Members`}</span>
         <button type="button" className="btn btn-box-tool" data-widget="collapse"><i className="fa fa-minus"></i>
         </button>
         <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
@@ -18,7 +18,7 @@ const RecomendedUser = ({ users, openChat }) => (
       <ul className="users-list clearfix">
         {Object.keys(users).map((data) => (
           <li key={data} onClick={() => { openChat(data); }}>
-            <img className="img-circle" src="http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" alt="User" />
+            <img className="img-circle" src={users[data].photoURL || 'http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png'} alt="User" />
             <span className="users-list-name" >{users[data].displayName || users[data].email}</span>
             <span className="users-list-date">{ users[data].license }</span>
           </li>

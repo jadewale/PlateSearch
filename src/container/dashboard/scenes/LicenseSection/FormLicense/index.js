@@ -29,7 +29,7 @@ FormGroup.propTypes = {
 };
 
 const ReadOnlyFormGroup = ({
-  onChangeFields, name, type, display, email
+  onChangeFields, name, type, display, email,
 }) => (
   <div className="form-group">
     <label htmlFor={`input${name}`} className="col-sm-2 control-label">{display}</label>
@@ -59,7 +59,7 @@ ReadOnlyFormGroup.propTypes = {
 };
 
 const FormLicense = ({
-  email, onChangeFields, onFile, onSubmit,
+  email, name, onChangeFields, onFile, onSubmit,
 }) => (
   <div className="">
     <div className="box box-info">
@@ -68,7 +68,7 @@ const FormLicense = ({
       </div>
       <form onSubmit={onSubmit} className="form-horizontal">
         <div className="box-body">
-          <FormGroup onChangeFields={onChangeFields} type="text" display="Name" name="name" />
+          <ReadOnlyFormGroup onChangeFields={onChangeFields} type="text" email={name} display="Name" name="name" />
           <ReadOnlyFormGroup onChangeFields={onChangeFields} type="email" email={email} display="Email" name="email" />
           <FormGroup onChangeFields={onChangeFields} type="text" display="License Plate" name="license" />
           <FormGroup onChangeFields={onChangeFields} type="text" display="Car Model" name="model" />
@@ -93,6 +93,7 @@ const FormLicense = ({
 
 FormLicense.propTypes = {
   email: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   onChangeFields: PropTypes.func.isRequired,
   onFile: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

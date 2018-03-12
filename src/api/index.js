@@ -11,7 +11,7 @@ function addToFireStore(obj, resolve) {
   firebase.firestore()
     .collection(obj.collection)
     .doc(obj.id)
-    .set(obj.data).then((ref) => (resolve({ success: true, id: ref })));
+    .set(obj.data).then((ref) => (resolve({ success: true, id: ref, ...obj.data })));
 }
 
 function getProviderType(type) {
@@ -34,7 +34,7 @@ export function authenticator(providerType) {
             id: email,
             collection: 'user',
             data: {
-              email, verified: false, photoURL, displayName,
+              email, verified: false, photoURL, displayName, status: '',
             },
           };
           addToFireStore(data, resolve);
@@ -108,123 +108,15 @@ export function fetchAllusers() {
   });
 }
 
-export function fetUserMessage(id) {
-  return new Promise((resolve) => {
-    let messages = [];
-    firebase.firestore()
-      .collection('messages')
-      .doc(id)
-      .get().then((doc) => {
-        if (doc.exists) {
-          messages = doc.data();
-        }
-        resolve(messages);
-      });
-  });
+export function updateUserStatus(id, status) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({ status }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
-/*
-const messaging = firebase.messaging();
-
-debugger;
-
-messaging.usePublicVapidKey('BKagOny0KF_2pCJQ3m....moL0ewzQ8rZu');
-
-messaging.requestPermission()
-  .then(() => {
-    console.log('Notification permission granted.');
-    getToken();
-  })
-  .catch((err) => {
-    console.log('Unable to get permission to notify.', err);
-  });
-
-function getToken() {
-  messaging.getToken()
-    .then((currentToken) => {
-      if (currentToken) {
-        sendTokenToServer(currentToken);
-        updateUIForPushEnabled(currentToken);
-      } else {
-        // Show permission request.
-        console.log('No Instance ID token available. Request permission to generate one.');
-        // Show permission UI.
-        updateUIForPushPermissionRequired();
-        setTokenSentToServer(false);
-      }
-    })
-    .catch((err) => {
-      console.log('An error occurred while retrieving token. ', err);
-      console.log('Error retrieving Instance ID token. ', err);
-      setTokenSentToServer(false);
-    });
+export function updateVisibilityStatus(id, visible) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({ visible }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
-
-// Callback fired if Instance ID token is updated.
-messaging.onTokenRefresh(() => {
-  messaging.getToken()
-    .then((refreshedToken) => {
-      console.log('Token refreshed.');
-      // Indicate that the new Instance ID token has not yet been sent to the
-      // app server.
-      setTokenSentToServer(false);
-      // Send Instance ID token to app server.
-      sendTokenToServer(refreshedToken);
-      // ...
-    })
-    .catch((err) => {
-      console.log('Unable to retrieve refreshed token ', err);
-      console.log('Unable to retrieve refreshed token ', err);
-    });
-});
-
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload);
-  // ...
-});
-
-messaging.setBackgroundMessageHandler((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload);
-  // Customize notification here
-  const notificationTitle = 'Background Message Title';
-  const notificationOptions = {
-    body: 'Background Message body.',
-    icon: '/firebase-logo.png',
-  };
-
-  return self.registration.showNotification(notificationTitle,
-    notificationOptions);
-});
-
-// Send the Instance ID token your application server, so that it can:
-// - send messages back to this app
-// - subscribe/unsubscribe the token from topics
-function sendTokenToServer(currentToken) {
-  if (!isTokenSentToServer()) {
-    console.log('Sending token to server...');
-    // TODO(developer): Send the current token to your server.
-    setTokenSentToServer(true);
-  } else {
-    console.log('Token already sent to server so won\'t send it again ' +
-      'unless it changes');
-  }
-}
-function isTokenSentToServer() {
-  return window.localStorage.getItem('sentToServer') === 1;
-}
-function setTokenSentToServer(sent) {
-  window.localStorage.setItem('sentToServer', sent ? 1 : 0);
-}
-
-function updateUIForPushEnabled(currentToken) {
-  console.log(currentToken);
-}
-function updateUIForPushPermissionRequired() {
-
-}
-
-export default function () {
-
-}
-*/
 

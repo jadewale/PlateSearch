@@ -6,6 +6,10 @@ let menuObject = [{ menu: 'Dashboard', children: ['Register', 'Search'], id: 1 }
 function generateMenu(id) {
   menuObject = menuObject.map((data) => {
     if (data.id === id) {
+      if (data.class === 'active') {
+        data.class = '';
+        return { ...data, class: '', toggle: 'right' };
+      }
       data.class = 'active';
       return { ...data, class: 'active', toggle: 'down' };
     }
