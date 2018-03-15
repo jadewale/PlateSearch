@@ -5,14 +5,18 @@ import {
   saveLicense as saveLicenseAPI,
   updateUserStatus as updateStatusAPI,
   updateVisibilityStatus as statusAPI,
+  updateGeoLocation as updateLocationAPI,
 } from '../../api';
+import {
+  getLocation as geolocationAPI,
+} from '../../api/map';
 import {
   sendMessage as sendMessageAPI,
   fetUserMessage as fetchMessageAPI,
   sendPushNotification as notificationAPI,
 } from '../../api/message';
 import {
-  CREATE_LICENSE, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, SEND_MESSAGE,
+  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, SEND_MESSAGE,
   SEND_NOTIFICATION, UPDATE_STATUS, UPDATE_VISIBILITY,
 } from '../../constants';
 import { getWeatherSuccess, fetchUsersSuccess, addChat, fetchChatMessage } from './actions';
@@ -96,6 +100,17 @@ function* updateVisibility(action) {
   }
 }
 
+function* getMapData(action) {
+  try {
+    if(action.id) {
+      const resp = yield call(geolocationAPI);
+      const saveData = yield call(updateLocationAPI, resp.coords, action.id);
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* receiveChat() {
   try {
 
@@ -113,4 +128,5 @@ export default [].concat(
   takeEvery(SEND_NOTIFICATION, sendPushNotification), // eslint-disable-line
   takeLatest(UPDATE_STATUS, updateStatus), // eslint-disable-line
   takeLatest(UPDATE_VISIBILITY, updateVisibility), // eslint-disable-line
+  takeLatest(FETCH_GOOGLE_MAPS, getMapData), // eslint-disable-line
 );

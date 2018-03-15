@@ -120,3 +120,12 @@ export function updateVisibilityStatus(id, visible) {
     .doc(id).set({ visible }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
+export function updateGeoLocation(coords, id) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({
+      latitude: coords.latitude,
+      longitude: coords.longitude,
+    }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+

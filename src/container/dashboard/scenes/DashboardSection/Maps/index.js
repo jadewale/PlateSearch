@@ -2,24 +2,25 @@ import React from 'react';
 import { GoogleMap, Marker, withGoogleMap, TrafficLayer } from 'react-google-maps';
 import PropTypes from 'prop-types';
 
-const DashboardMap = (props) => (
+const DashboardMap = ({ userlocation, allUsers, isMarkerShown }) => (
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: props.coords.lat, lng: props.coords.lon }}
+    defaultZoom={5}
+    defaultCenter={{ lat: userlocation.lat, lng: userlocation.lng }}
     googleMapURL="https://maps.googleapis.com/maps/api/js"
     loadingElement={<div>Loading</div>}
   >
-    {props.isMarkerShown && <Marker position={{ lat: props.coords.lat, lng: props.coords.lon }} />}
+    {isMarkerShown && Object.keys(allUsers).map((data) => allUsers[data].latitude && allUsers[data].visible &&
+      <Marker key={data} position={{ lat: allUsers[data].latitude || 0, lng: allUsers[data].longitude || 0 }} />)}
     <TrafficLayer autoUpdate />
   </GoogleMap>
 );
-
 DashboardMap.propTypes = {
   isMarkerShown: PropTypes.bool.isRequired,
-  coords: PropTypes.shape({
+  userlocation: PropTypes.shape({
     lat: PropTypes.number.isRequired,
-    lon: PropTypes.number.isRequired,
+    lng: PropTypes.number.isRequired,
   }).isRequired,
+  allUsers: PropTypes.object.isRequired,
 };
 
 export default withGoogleMap(DashboardMap);

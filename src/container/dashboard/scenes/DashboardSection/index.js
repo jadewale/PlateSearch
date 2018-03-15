@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route } from 'react-router-dom';
 import Maps from './Maps';
 import RecommendedUsers from './RecommendedUsers';
 
-const DashboardSection = ({ coords, users, openChat }) => (
+const DashboardSection = ({
+  coords, users, openChat,
+}) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
       <div className="box-header with-border">
@@ -30,6 +31,11 @@ const DashboardSection = ({ coords, users, openChat }) => (
           <div className="col-md-8">
             <Maps
               coords={coords}
+              userlocation={{
+                lat: coords.latitude,
+                lng: coords.longitude,
+              }}
+              allUsers={users}
               containerElement={<div style={{ height: '400px' }} />}
               mapElement={<div style={{ height: '100%' }} />}
               isMarkerShown

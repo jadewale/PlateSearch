@@ -11,7 +11,8 @@ import Footer from '../../component/footer';
 import Notification from '../../component/notification';
 
 import {
-  addChatMessage, fetchChatMessage, fetchUsers, getWeather, registerPushNotification, removeChat, sendNotification,
+  addChatMessage, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification, removeChat,
+  sendNotification,
   submitForm,
   submitMessage, toggleVisibiliy,
   updateFields, updateStatus, updateStatusField,
@@ -33,7 +34,10 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { email } = this.getEmail();
-    if (email) { this.props.registerPushNotification(this.getEmail().email); }
+    if (email) {
+      this.props.registerPushNotification(this.getEmail().email);
+      this.props.getLocation(email);
+    }
   }
 
   onToggleDashboard = () => {
@@ -149,9 +153,14 @@ class Dashboard extends Component {
 
   render() {
     const showSearch = this.props.user.userProfile.verified;
-    const { displayName } = this.props.user.userProfile;
+    const { displayName, longitude, latitude } = this.props.user.userProfile;
     const { email } = this.getEmail();
     const { length } = this.props.chat.chatData.chatOrder;
+
+    if (!longitude || !latitude) {
+      // latitude = this.props.weather[0].coord.latitude;
+      // longitude = this.props.weather[0].coord.longitude;
+    }
 
     return (
       <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
@@ -170,7 +179,11 @@ class Dashboard extends Component {
             Please Upload your License for Approval
           </section>
           { showSearch ?
-            <DashboardSection users={this.props.users.allUsers} openChat={this.onOpenChat} coords={this.props.weather[0].coord} />
+            <DashboardSection
+              users={this.props.users.allUsers}
+              openChat={this.onOpenChat}
+              coords={{ latitude: longitude, longitude: latitude }}
+            />
             :
             <LicenseSection
               verified={showSearch}
@@ -219,6 +232,7 @@ function mapDispatchToProps(dispatch) {
     fetchChatMessage: (id, userId) => dispatch(fetchChatMessage(id, userId)),
     fetchUsers: () => dispatch(fetchUsers()),
     getWeather: (city) => dispatch(getWeather(city)),
+    getLocation: (id) => dispatch(getMapData(id)),
     remove: () => dispatch(removeChat()),
     registerPushNotification: (id) => dispatch(registerPushNotification(id)),
     sendNotification: (token, body) => dispatch(sendNotification(token, body)),
@@ -240,6 +254,7 @@ Dashboard.propTypes = {
   chat: PropTypes.shape({
     chatData: PropTypes.object,
   }).isRequired,
+  getLocation: PropTypes.func.isRequired,
   fetchChatMessage: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   getWeather: PropTypes.func.isRequired,
@@ -252,9 +267,7 @@ Dashboard.propTypes = {
     userProfile: PropTypes.object,
   }).isRequired,
   sendNotification: PropTypes.func.isRequired,
-  status: PropTypes.shape({
-    update: PropTypes.string.isRequired,
-  }).isRequired,
+  status: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
   submitMessage: PropTypes.func.isRequired,
   toggleVisibility: PropTypes.func.isRequired,

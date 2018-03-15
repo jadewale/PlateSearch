@@ -2,7 +2,7 @@ import {
   ADD_CHAT, REMOVE_CHAT, GET_WEATHER, GET_WEATHER_SUCCESS, UPDATE_FIELDS,
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
   PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
-  UPDATE_VISIBILITY,
+  UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -135,6 +135,13 @@ export function toggleVisibiliy(id, visible) {
     type: UPDATE_VISIBILITY,
     id,
     visible,
+  };
+}
+
+export function getMapData(id) {
+  return {
+    type: FETCH_GOOGLE_MAPS,
+    id,
   };
 }
 

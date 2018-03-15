@@ -49,20 +49,20 @@ const SideBar = ({
         </li>
         <li className="header">MAIN NAVIGATION</li>
         {menuObject.map(((data) => (
-          <li className={`treeview ${data.class}`}>
+          <li key={data} className={`treeview ${data.class}`}>
             <a onClick={() => { generateMenu(data.id); }} href="#">
               <i className="fa fa-dashboard"></i>
               <span>{
                 data.menu
               }
-                </span>
+              </span>
               <span className="pull-right-container">
-                  <i className={`fa fa-angle-${data.toggle || 'right'} pull-right`}></i>
-                </span>
+                <i className={`fa fa-angle-${data.toggle || 'right'} pull-right`}></i>
+              </span>
             </a>
             <ul className="treeview-menu">
               {data.children.map((obj) => (
-                <li>
+                <li key={obj}>
                   <Link to={`/dashboard/${obj}`}><i className="fa fa-circle-o"></i>{obj} </Link>
                 </li>
               ))}
