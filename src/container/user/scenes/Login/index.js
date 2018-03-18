@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Login = ({ faceBookSignUp, googleSignUp }) => (
   <div className="login-box">
@@ -17,6 +18,7 @@ const Login = ({ faceBookSignUp, googleSignUp }) => (
           Google+
         </button>
       </div>
+      <Link to="/signup" href="/signup" className="text-center">Log In as Administrator</Link>
     </div>
   </div>
 );

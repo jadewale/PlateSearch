@@ -9,8 +9,10 @@ import Header from '../../component/header';
 import Sidebar from '../../component/sideNav';
 import Footer from '../../component/footer';
 import Notification from '../../component/notification';
+import ProfileCard from '../../component/profileCard';
 
 import {
+  addChat,
   addChatMessage, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification, removeChat,
   sendNotification,
   submitForm,
@@ -64,7 +66,11 @@ class Dashboard extends Component {
 
   onOpenChat =(id) => {
     const { email } = this.getEmail();
-    this.props.fetchChatMessage(this.sortData(id, email), id);
+    if (email) {
+      this.props.fetchChatMessage(this.sortData(id, email), id);
+    } else {
+      this.props.addChat('abcd', this.props.users.allUsers[id], '1234');
+    }
   };
 
   onOpenNotification = (id) => {
@@ -152,9 +158,51 @@ class Dashboard extends Component {
   };
 
   render() {
+    const adminEmail = this.props.admin.adminProfile.email;
+    const { email } = this.getEmail();
+    if (adminEmail && !email) {
+      return (
+        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
+          <Header toggle={this.onToggleDashboard} />
+          <Sidebar
+            photoUrl=""
+            onSubmit={() => {}}
+            onChange={() => {}}
+            status="Admin User"
+          />
+          <div className="content-wrapper">
+            <section className="content-header">
+              <h1>
+                Welcome
+              </h1>
+              Admin Section
+            </section>
+            <DashboardSection
+              users={this.props.users.allUsers}
+              openChat={this.onOpenChat}
+              coords={{
+                latitude: this.props.weather[0].coord.lat,
+                longitude: this.props.weather[0].coord.lon,
+              }}
+            />
+            <div>
+              {this.props.chat.chatData.chatOrder.map((obj, index) => (
+                <ProfileCard
+                  key={index.toString()}
+                  data={obj}
+                />
+              ))}
+            </div>
+          </div>
+          <Footer />
+          <div className="control-sidebar-bg"></div>
+        </div>
+      );
+    }
+
+
     const showSearch = this.props.user.userProfile.verified;
     const { displayName, longitude, latitude } = this.props.user.userProfile;
-    const { email } = this.getEmail();
     const { length } = this.props.chat.chatData.chatOrder;
 
     if (!longitude || !latitude) {
@@ -228,6 +276,7 @@ class Dashboard extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
+    addChat: (id, value, userId) => dispatch(addChat(id, value, userId)),
     addChatMessage: (message) => dispatch(addChatMessage(message)),
     fetchChatMessage: (id, userId) => dispatch(fetchChatMessage(id, userId)),
     fetchUsers: () => dispatch(fetchUsers()),
@@ -250,7 +299,15 @@ function mapStateToProps(state) {
 }
 
 Dashboard.propTypes = {
+  addChat: PropTypes.func.isRequired,
   addChatMessage: PropTypes.func.isRequired,
+  admin: PropTypes.shape({
+    adminProfile: PropTypes.shape({
+      email: PropTypes.string,
+      password: PropTypes.string,
+      error: PropTypes.string,
+    }),
+  }).isRequired,
   chat: PropTypes.shape({
     chatData: PropTypes.object,
   }).isRequired,

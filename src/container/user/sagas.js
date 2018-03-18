@@ -1,5 +1,5 @@
 import { call, put, take, takeLatest } from 'redux-saga/effects';
-import { delay } from 'redux-saga'
+import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
 import { authenticator as authApi } from '../../api/index';
 import { getToken as getTokenAPI } from '../../api/pushNotifications';
@@ -23,7 +23,10 @@ function* googleSign() {
 function* facebookSign() {
   try {
     const response = yield call(authApi, FACEBOOK);
-    if (response.success) { yield put(facebookSuccess(response)); }
+    if (response.success) {
+      yield put(facebookSuccess(response));
+      yield put(push('/dashboard'));
+    }
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }
@@ -45,7 +48,7 @@ function* registerPushNotification(action) {
       }
 
       if (value.token) {
-        debugger;
+
       }
     }
   } catch (e) {

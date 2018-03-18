@@ -2,7 +2,7 @@ import {
   FACEBOOK_SIGN,
   GOOGLE_SIGN,
   FACEBOOKSUCCESS,
-  GOOGLESUCCESS,
+  GOOGLESUCCESS, SIGN_UP, UPDATE_ADMIN_SIGN_UP,
 } from '../../constants';
 
 export function facebookSignIn() {
@@ -28,6 +28,20 @@ export function googleSuccess(user) {
   return {
     type: GOOGLESUCCESS,
     user,
+  };
+}
+
+export function updateAdminSignUp(keyPath, value) {
+  return {
+    type: UPDATE_ADMIN_SIGN_UP,
+    keyPath,
+    value,
+  };
+}
+
+export function adminSignUp() {
+  return {
+    type: SIGN_UP,
   };
 }
 
