@@ -69,7 +69,7 @@ class Dashboard extends Component {
     if (email) {
       this.props.fetchChatMessage(this.sortData(id, email), id);
     } else {
-      this.props.addChat('abcd', this.props.users.allUsers[id], '1234');
+      this.props.addChat('abcd', this.props.users.allUsers[id], id);
     }
   };
 
@@ -180,18 +180,17 @@ class Dashboard extends Component {
             <DashboardSection
               users={this.props.users.allUsers}
               openChat={this.onOpenChat}
+              admin={true}
               coords={{
                 latitude: this.props.weather[0].coord.lat,
                 longitude: this.props.weather[0].coord.lon,
               }}
             />
             <div>
-              {this.props.chat.chatData.chatOrder.map((obj, index) => (
-                <ProfileCard
-                  key={index.toString()}
-                  data={obj}
-                />
-              ))}
+              {this.props.chat.chatData.chatOrder.map((obj, index) => (<ProfileCard
+                key={index.toString()}
+                data={this.props.users.allUsers[obj]}
+              />))}
             </div>
           </div>
           <Footer />

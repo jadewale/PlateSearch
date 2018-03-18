@@ -4,7 +4,7 @@ import Maps from './Maps';
 import RecommendedUsers from './RecommendedUsers';
 
 const DashboardSection = ({
-  coords, users, openChat,
+  admin, coords, users, openChat,
 }) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
@@ -42,7 +42,7 @@ const DashboardSection = ({
             />
           </div>
           <div className="col-md-4">
-            <RecommendedUsers openChat={openChat} users={users} />
+            <RecommendedUsers admin={admin} openChat={openChat} users={users} />
           </div>
           <div className="col-md-6">
           </div>

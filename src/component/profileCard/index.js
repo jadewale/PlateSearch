@@ -13,30 +13,41 @@ const ProfileCard = ({ data }) => (
   >
     <div className="box box-widget widget-user">
       <div className="widget-user-header bg-aqua-active">
-        <h3 className="widget-user-username">Alexander Pierce</h3>
-        <h5 className="widget-user-desc">Founder &amp; CEO</h5>
+        <h3 className="widget-user-username">{ data.displayName || data.email }</h3>
+        <h5 className="widget-user-desc">{ data.status || 'No Status' }</h5>
       </div>
       <div className="widget-user-image">
-        <img className="img-circle" src="../dist/img/user1-128x128.jpg" alt="User Avatar" />
+        <img
+          className="img-circle"
+          src={data.photoURL ||
+        'http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png'}
+          alt="User Avatar"
+        />
       </div>
       <div className="box-footer">
         <div className="row">
           <div className="col-sm-4 border-right">
             <div className="description-block">
-              <h5 className="description-header">3,200</h5>
-              <span className="description-text">SALES</span>
+              <a href="#" className="link-black text-sm">
+                <i className="fa fa-thumbs-o-up margin-r-5"></i>
+                Approve
+              </a>
             </div>
           </div>
           <div className="col-sm-4 border-right">
             <div className="description-block">
-              <h5 className="description-header">13,000</h5>
-              <span className="description-text">FOLLOWERS</span>
+              <h5 className="description-header">Status</h5>
+              <span className="description-text">
+                { (data.verified) ? 'Verified' : 'Not Verified' }
+              </span>
             </div>
           </div>
           <div className="col-sm-4">
             <div className="description-block">
-              <h5 className="description-header">35</h5>
-              <span className="description-text">PRODUCTS</span>
+              <a href="#" className="link-black text-sm">
+                <i className="fa fa-thumbs-o-down margin-r-5"></i>
+                Reject
+              </a>
             </div>
           </div>
         </div>
