@@ -162,7 +162,7 @@ class Dashboard extends Component {
     const { email } = this.getEmail();
     if (adminEmail && !email) {
       return (
-        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
+        <div className="skin-blue sidebar-mini wrapper sidebar-collapse">
           <Header toggle={this.onToggleDashboard} />
           <Sidebar
             photoUrl=""
@@ -180,7 +180,7 @@ class Dashboard extends Component {
             <DashboardSection
               users={this.props.users.allUsers}
               openChat={this.onOpenChat}
-              admin={true}
+              admin
               coords={{
                 latitude: this.props.weather[0].coord.lat,
                 longitude: this.props.weather[0].coord.lon,
