@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Header = ({ toggle }) => (
   <header className="main-header">
-    <a href="/dashboard" className="logo">
+    <a href="#" className="logo">
       <span className="logo-mini"><b>P</b>M</span>
       <span className="logo-lg"><b>Plate</b>Me</span>
     </a>
