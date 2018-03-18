@@ -1,25 +1,47 @@
 import { call, put, fork, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
+  approveUser as approveUserAPI,
   fetchAllusers as usersAPI,
   getWeather as weatherAPI,
+  rejectUser as rejectUserAPI,
   saveLicense as saveLicenseAPI,
   updateUserStatus as updateStatusAPI,
   updateVisibilityStatus as statusAPI,
   updateGeoLocation as updateLocationAPI,
 } from '../../api';
-import {
-  getLocation as geolocationAPI,
-} from '../../api/map';
+import { getLocation as geolocationAPI } from '../../api/map';
 import {
   sendMessage as sendMessageAPI,
   fetUserMessage as fetchMessageAPI,
   sendPushNotification as notificationAPI,
 } from '../../api/message';
 import {
-  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, SEND_MESSAGE,
+  APPROVE_USER,
+  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, REJECT_USERS, SEND_MESSAGE,
   SEND_NOTIFICATION, UPDATE_STATUS, UPDATE_VISIBILITY,
 } from '../../constants';
-import { getWeatherSuccess, fetchUsersSuccess, addChat, fetchChatMessage } from './actions';
+import {
+  getWeatherSuccess, fetchUsersSuccess, addChat,
+  fetchChatMessage, fetchUsers as fetchAllUsers,
+} from './actions';
+
+function* approveUser(action) {
+  try {
+    const approve = yield call(approveUserAPI, action.id);
+    yield put(fetchAllUsers());
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* rejectUser(action) {
+  try {
+    const reject = yield call(rejectUserAPI, action.id);
+    yield put(fetchAllUsers());
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 function* fetchUserChat(action) {
   try {
@@ -102,7 +124,7 @@ function* updateVisibility(action) {
 
 function* getMapData(action) {
   try {
-    if(action.id) {
+    if (action.id) {
       const resp = yield call(geolocationAPI);
       const saveData = yield call(updateLocationAPI, resp.coords, action.id);
     }
@@ -129,4 +151,6 @@ export default [].concat(
   takeLatest(UPDATE_STATUS, updateStatus), // eslint-disable-line
   takeLatest(UPDATE_VISIBILITY, updateVisibility), // eslint-disable-line
   takeLatest(FETCH_GOOGLE_MAPS, getMapData), // eslint-disable-line
+  takeLatest(APPROVE_USER, approveUser), // eslint-disable-line
+  takeLatest(REJECT_USERS, rejectUser), // eslint-disable-line
 );

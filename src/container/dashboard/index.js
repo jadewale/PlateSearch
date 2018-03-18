@@ -109,6 +109,7 @@ class Dashboard extends Component {
 
   rejectUser = (evt, id) => {
     evt.preventDefault();
+    this.props.remove();
     this.props.rejectUsers(id);
   };
 
