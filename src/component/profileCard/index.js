@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ProfileCard = ({ data }) => (
+const ProfileCard = ({ data, onClose }) => (
   <div
     style={{
       position: 'fixed',
@@ -16,7 +16,7 @@ const ProfileCard = ({ data }) => (
         <h3 className="widget-user-username">{ data.displayName || data.email }</h3>
         <h5 className="widget-user-desc">{ data.status || 'No Status' }</h5>
         <div className="box-tools pull-right">
-          <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
+          <button type="button" onClick={onClose} className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
           </button>
         </div>
       </div>
@@ -59,5 +59,16 @@ const ProfileCard = ({ data }) => (
     </div>
   </div>
 );
+
+ProfileCard.propTypes = {
+  data: PropTypes.shape({
+    displayName: PropTypes.string,
+    email: PropTypes.string,
+    photoURL: PropTypes.string,
+    status: PropTypes.bool,
+    visible: PropTypes.bool,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default ProfileCard;

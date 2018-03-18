@@ -190,6 +190,7 @@ class Dashboard extends Component {
               {this.props.chat.chatData.chatOrder.map((obj, index) => (<ProfileCard
                 key={index.toString()}
                 data={this.props.users.allUsers[obj]}
+                onClose={this.onRemove}
               />))}
             </div>
           </div>
