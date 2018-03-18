@@ -13,13 +13,17 @@ import ProfileCard from '../../component/profileCard';
 
 import {
   addChat,
-  addChatMessage, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification, removeChat,
+  addChatMessage, approveUsers, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification,
+  rejectUsers,
+  removeChat,
   sendNotification,
   submitForm,
   submitMessage, toggleVisibiliy,
   updateFields, updateStatus, updateStatusField,
 } from './actions';
 import { makeSelector } from './selector';
+import { approveUser } from '../../actions/userActions';
+import { rejectUser } from '../../api/index';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -97,6 +101,16 @@ class Dashboard extends Component {
   getChatUser = () => this.props.chat.chatData.chatOrder[this.props.chat.chatData.chatOrder.length - 1];
 
   getEmail = () => this.props.user.userProfile;
+
+  approveUser = (evt, id) => {
+    evt.preventDefault();
+    this.props.approveUsers(id);
+  };
+
+  rejectUser = (evt, id) => {
+    evt.preventDefault();
+    this.props.rejectUsers(id);
+  };
 
   changeStatusField =(evt) => {
     const { checked, value, name } = evt.target;
@@ -188,6 +202,8 @@ class Dashboard extends Component {
             />
             <div>
               {this.props.chat.chatData.chatOrder.map((obj, index) => (<ProfileCard
+                approve={this.approveUser}
+                reject={this.rejectUser}
                 key={index.toString()}
                 data={this.props.users.allUsers[obj]}
                 onClose={this.onRemove}
@@ -277,11 +293,13 @@ class Dashboard extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     addChat: (id, value, userId) => dispatch(addChat(id, value, userId)),
+    approveUsers: (id) => dispatch(approveUsers(id)),
     addChatMessage: (message) => dispatch(addChatMessage(message)),
     fetchChatMessage: (id, userId) => dispatch(fetchChatMessage(id, userId)),
     fetchUsers: () => dispatch(fetchUsers()),
     getWeather: (city) => dispatch(getWeather(city)),
     getLocation: (id) => dispatch(getMapData(id)),
+    rejectUsers: (id) => dispatch(rejectUsers(id)),
     remove: () => dispatch(removeChat()),
     registerPushNotification: (id) => dispatch(registerPushNotification(id)),
     sendNotification: (token, body) => dispatch(sendNotification(token, body)),
@@ -308,6 +326,7 @@ Dashboard.propTypes = {
       error: PropTypes.string,
     }),
   }).isRequired,
+  approveUsers: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     chatData: PropTypes.object,
   }).isRequired,
@@ -320,6 +339,7 @@ Dashboard.propTypes = {
   }).isRequired,
   remove: PropTypes.func.isRequired,
   registerPushNotification: PropTypes.func.isRequired,
+  rejectUsers: PropTypes.func.isRequired,
   user: PropTypes.shape({
     userProfile: PropTypes.object,
   }).isRequired,

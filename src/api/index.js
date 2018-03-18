@@ -129,3 +129,17 @@ export function updateGeoLocation(coords, id) {
     }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
+export function approveUser(id) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({
+      verified: true,
+    }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+
+export function rejectUser(id) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).delete().then((res) => (res)).catch((err) => (err));
+}
+
