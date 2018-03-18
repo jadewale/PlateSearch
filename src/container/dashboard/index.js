@@ -159,7 +159,7 @@ class Dashboard extends Component {
   validateForm = (data) => {
     const { length } = Object.keys(data);
 
-    if (length === 4) {
+    if (length === 3) {
       const error = [];
       Object.keys(data).filter((obj) => {
         const props = data[obj];
@@ -304,7 +304,7 @@ function mapDispatchToProps(dispatch) {
     remove: () => dispatch(removeChat()),
     registerPushNotification: (id) => dispatch(registerPushNotification(id)),
     sendNotification: (token, body) => dispatch(sendNotification(token, body)),
-    submitForm: (data) => dispatch(submitForm(data)),
+    submitForm: (data, id) => dispatch(submitForm(data, id)),
     submitMessage: (message, id, userProfile) => dispatch(submitMessage(message, id, userProfile)),
     toggleVisibility: (id, status) => dispatch(toggleVisibiliy(id, status)),
     updateFields: (keyPath, value) => dispatch(updateFields(keyPath, value)),
