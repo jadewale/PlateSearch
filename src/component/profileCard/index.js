@@ -15,6 +15,10 @@ const ProfileCard = ({ data }) => (
       <div className="widget-user-header bg-aqua-active">
         <h3 className="widget-user-username">{ data.displayName || data.email }</h3>
         <h5 className="widget-user-desc">{ data.status || 'No Status' }</h5>
+        <div className="box-tools pull-right">
+          <button type="button" className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
+          </button>
+        </div>
       </div>
       <div className="widget-user-image">
         <img
