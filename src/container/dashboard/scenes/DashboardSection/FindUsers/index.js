@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FindUsers = ({ display, searchUsers, onChange }) => (
+const FindUsers = ({
+  display, searchUsers, onChange, openChat,
+}) => (
   <div className="box box-danger">
     <div className="box-header with-border">
       <h3 style={{ fontSize: '8px' }} className="box-title"> Search Users </h3>
@@ -39,7 +41,8 @@ const FindUsers = ({ display, searchUsers, onChange }) => (
                     </a>
                 </li>
                 <li><a href="#">License <span className="pull-right ">{ display.license }</span></a></li>
-                </ul>
+                <li onClick={() => { openChat(display.email); }}><a href="#">Chat <span className="pull-right "></span></a></li>
+              </ul>
             </div>
           </div>
         </div> : null
@@ -53,6 +56,7 @@ const FindUsers = ({ display, searchUsers, onChange }) => (
 
 FindUsers.propTypes = {
   display: PropTypes.object.isRequired,
+  openChat: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
 };
