@@ -253,12 +253,7 @@ class Dashboard extends Component {
           status={this.props.user.userProfile.status}
         />
         <div className="content-wrapper">
-          <section className="content-header">
-            <h1>
-              Welcome
-            </h1>
-            Please Upload your License for Approval
-          </section>
+
           { showSearch ?
             <DashboardSection
               users={this.props.users.allUsers}
@@ -269,14 +264,22 @@ class Dashboard extends Component {
               display={this.props.users.display && this.props.users.display[0]}
             />
             :
-            <LicenseSection
-              verified={showSearch}
-              onChangeFields={this.onChangeFields}
-              onFile={this.onFileChange}
-              onSubmit={this.onSubmit}
-              email={email}
-              name={displayName}
-            />
+            <div>
+              <section className="content-header">
+                <h1>
+                  Welcome
+                </h1>
+                Please Upload your License for Approval
+              </section>
+              <LicenseSection
+                verified={showSearch}
+                onChangeFields={this.onChangeFields}
+                onFile={this.onFileChange}
+                onSubmit={this.onSubmit}
+                email={email}
+                name={displayName}
+              />
+            </div>
           }
           <div>
             {this.props.chat.chatData.chatOrder.map((obj, index) => (<Chat
