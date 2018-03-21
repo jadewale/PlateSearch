@@ -216,6 +216,7 @@ class Dashboard extends Component {
                 latitude: this.props.weather[0].coord.lat,
                 longitude: this.props.weather[0].coord.lon,
               }}
+              name="Admin"
             />
             <div>
               {this.props.chat.chatData.chatOrder.map((obj, index) => (<ProfileCard
@@ -262,6 +263,7 @@ class Dashboard extends Component {
               searchUsers={this.searchUser}
               onChange={this.onChangeSearch}
               display={this.props.users.display && this.props.users.display[0]}
+              name={displayName}
             />
             :
             <div>

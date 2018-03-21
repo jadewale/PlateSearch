@@ -5,12 +5,12 @@ import RecommendedUsers from './RecommendedUsers';
 import FindUsers from './FindUsers';
 
 const DashboardSection = ({
-  admin, coords, display, users, openChat, onChange, searchUsers,
+  admin, coords, display, name, openChat, onChange, searchUsers, users
 }) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
       <div className="box-header with-border">
-        <h3 className="box-title">Title</h3>
+        <h3 className="box-title">Welcome to PlateMe { name }</h3>
 
         <div className="box-tools pull-right">
           <button
@@ -59,6 +59,7 @@ const DashboardSection = ({
 DashboardSection.propTypes = {
   coords: PropTypes.object.isRequired,
   display: PropTypes.array,
+  name: PropTypes.string.isRequired,
   openChat: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
