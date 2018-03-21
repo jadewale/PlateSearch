@@ -34,7 +34,7 @@ const FindUsers = ({
             <div className="box-footer no-padding">
               <ul className="nav nav-stacked">
                 <li><a href="#">Model <span className="pull-right ">{display.model}</span></a></li>
-                <li><a target="_blank" href={display.file}>View License <span
+                <li><a ><span
                   className="pull-right badge bg-red"
                 >1
                 </span>

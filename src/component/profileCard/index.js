@@ -46,6 +46,7 @@ const ProfileCard = ({
               <span className="description-text">
                 { (data.verified) ? 'Verified' : 'Not Verified' }
               </span>
+              <a target="_blank" href={data.file}> <span>View License</span></a>
             </div>
           </div>
           <div className="col-sm-4">

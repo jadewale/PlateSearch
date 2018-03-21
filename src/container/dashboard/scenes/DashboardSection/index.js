@@ -43,7 +43,7 @@ const DashboardSection = ({
             />
           </div>
           <div className="col-md-4">
-            <FindUsers openChat={openChat} display={display} searchUsers={searchUsers} onChange={onChange} />
+            { admin ? null: <FindUsers openChat={openChat} display={display} searchUsers={searchUsers} onChange={onChange} />}
             <RecommendedUsers admin={admin} openChat={openChat} users={users} />
           </div>
           <div className="col-md-6">
