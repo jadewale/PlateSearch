@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Maps from './Maps';
 import RecommendedUsers from './RecommendedUsers';
+import FindUsers from './FindUsers';
 
 const DashboardSection = ({
   admin, coords, users, openChat,
@@ -43,6 +44,7 @@ const DashboardSection = ({
           </div>
           <div className="col-md-4">
             <RecommendedUsers admin={admin} openChat={openChat} users={users} />
+            <FindUsers/>
           </div>
           <div className="col-md-6">
           </div>
