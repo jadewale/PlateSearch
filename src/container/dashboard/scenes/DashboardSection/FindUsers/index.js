@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ProfileCard from '../../../../../component/profileCard';
 
 const FindUsers = ({ display, searchUsers, onChange }) => (
   <div className="box box-danger">
@@ -17,25 +16,34 @@ const FindUsers = ({ display, searchUsers, onChange }) => (
       </form>
     </div>
     <div className="box-body ">
-      <div className="col-md-12">
-        <div className="box box-widget widget-user-2">
-          <div className="widget-user-header bg-aqua-active">
-            <div className="widget-user-image">
-              <img className="img-circle" src="http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" alt="User Avatar" />
+      { (display.model) ?
+        <div className="col-md-12">
+          <div className="box box-widget widget-user-2">
+            <div className="widget-user-header bg-aqua-active">
+              <div className="widget-user-image">
+                <img
+                  className="img-circle"
+                  src={display.photoURL || 'http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png" alt="User Avatar'}
+                />
+              </div>
+              <h3 className="widget-user-username">{display.displayName}</h3>
+              <h5 className="widget-user-desc">{display.status}</h5>
             </div>
-            <h3 className="widget-user-username">Nadia Carmichael</h3>
-            <h5 className="widget-user-desc">Lead Developer</h5>
+            <div className="box-footer no-padding">
+              <ul className="nav nav-stacked">
+                <li><a href="#">Model <span className="pull-right ">{display.model}</span></a></li>
+                <li><a target="_blank" href={display.file}>View License <span
+                  className="pull-right badge bg-red"
+                >1
+                </span>
+                    </a>
+                </li>
+                <li><a href="#">License <span className="pull-right ">{ display.license }</span></a></li>
+                </ul>
+            </div>
           </div>
-          <div className="box-footer no-padding">
-            <ul className="nav nav-stacked">
-              <li><a href="#">Projects <span className="pull-right badge bg-blue">31</span></a></li>
-              <li><a href="#">Tasks <span className="pull-right badge bg-aqua">5</span></a></li>
-              <li><a href="#">Completed Projects <span className="pull-right badge bg-green">12</span></a></li>
-              <li><a href="#">Followers <span className="pull-right badge bg-red">842</span></a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        </div> : null
+      }
     </div>
     <div className="box-footer text-center">
       <a href="/" className="uppercase"></a>
@@ -44,6 +52,7 @@ const FindUsers = ({ display, searchUsers, onChange }) => (
 );
 
 FindUsers.propTypes = {
+  display: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
 };

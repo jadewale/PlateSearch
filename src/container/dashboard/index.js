@@ -60,6 +60,7 @@ class Dashboard extends Component {
   onChangeSearch = (evt) => {
     const { name, value } = evt.target;
     this.props.searchUsers(value);
+    this.props.addUser([]);
   };
 
   onCloseNotification = () => {
@@ -265,7 +266,7 @@ class Dashboard extends Component {
               coords={{ latitude: longitude, longitude: latitude }}
               searchUsers={this.searchUser}
               onChange={this.onChangeSearch}
-              display={this.props.users.display}
+              display={this.props.users.display && this.props.users.display[0]}
             />
             :
             <LicenseSection

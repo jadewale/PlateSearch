@@ -43,9 +43,9 @@ const DashboardSection = ({
             />
           </div>
           <div className="col-md-4">
-            <FindUsers display={display} searchUsers={searchUsers} onChange={onChange}/>
+            <FindUsers display={display} searchUsers={searchUsers} onChange={onChange} />
             <RecommendedUsers admin={admin} openChat={openChat} users={users} />
-             </div>
+          </div>
           <div className="col-md-6">
           </div>
         </div>
@@ -67,7 +67,7 @@ DashboardSection.propTypes = {
 
 DashboardSection.defaultProps = {
   users: {},
-  display: [],
+  display: {},
 };
 
 export default DashboardSection;
