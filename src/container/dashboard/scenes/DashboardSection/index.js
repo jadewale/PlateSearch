@@ -5,7 +5,7 @@ import RecommendedUsers from './RecommendedUsers';
 import FindUsers from './FindUsers';
 
 const DashboardSection = ({
-  admin, coords, users, openChat, onChange, searchUsers,
+  admin, coords, display, users, openChat, onChange, searchUsers,
 }) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
@@ -43,9 +43,9 @@ const DashboardSection = ({
             />
           </div>
           <div className="col-md-4">
+            <FindUsers display={display} searchUsers={searchUsers} onChange={onChange}/>
             <RecommendedUsers admin={admin} openChat={openChat} users={users} />
-            <FindUsers searchUsers={searchUsers} onChange={onChange}/>
-          </div>
+             </div>
           <div className="col-md-6">
           </div>
         </div>
@@ -58,13 +58,16 @@ const DashboardSection = ({
 
 DashboardSection.propTypes = {
   coords: PropTypes.object.isRequired,
+  display: PropTypes.array,
   openChat: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
   users: PropTypes.object,
 };
 
 DashboardSection.defaultProps = {
   users: {},
+  display: [],
 };
 
 export default DashboardSection;

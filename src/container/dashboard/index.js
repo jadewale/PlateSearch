@@ -139,7 +139,14 @@ class Dashboard extends Component {
 
   searchUser = (e) => {
     e.preventDefault();
-    debugger
+    const key = this.props.users.search;
+    const values = Object.values(this.props.users.allUsers).filter((obj) => {
+      if (obj.verified && obj.license && obj.license.toLowerCase() === key.toLowerCase()) {
+        return true;
+      }
+      return false;
+    });
+    this.props.addUser(values);
   };
 
   sendChat =() => {
@@ -258,6 +265,7 @@ class Dashboard extends Component {
               coords={{ latitude: longitude, longitude: latitude }}
               searchUsers={this.searchUser}
               onChange={this.onChangeSearch}
+              display={this.props.users.display}
             />
             :
             <LicenseSection
@@ -371,6 +379,8 @@ Dashboard.propTypes = {
   }).isRequired,
   users: PropTypes.shape({
     allUsers: PropTypes.object,
+    display: PropTypes.array,
+    search: PropTypes.string.isRequired,
   }).isRequired,
   weather: PropTypes.array.isRequired,
 };
