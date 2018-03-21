@@ -34,12 +34,6 @@ const FindUsers = ({
             <div className="box-footer no-padding">
               <ul className="nav nav-stacked">
                 <li><a href="#">Model <span className="pull-right ">{display.model}</span></a></li>
-                <li><a ><span
-                  className="pull-right badge bg-red"
-                >1
-                </span>
-                    </a>
-                </li>
                 <li><a href="#">License <span className="pull-right ">{ display.license }</span></a></li>
                 <li onClick={() => { openChat(display.email); }}><a href="#">Chat <span className="pull-right "></span></a></li>
               </ul>
