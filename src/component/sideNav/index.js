@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-let menuObject = [{ menu: 'Dashboard', children: ['Register', 'Search'], id: 1 }];
+let menuObject = [];
 
 function generateMenu(id) {
   menuObject = menuObject.map((data) => {
