@@ -5,7 +5,7 @@ import RecommendedUsers from './RecommendedUsers';
 import FindUsers from './FindUsers';
 
 const DashboardSection = ({
-  admin, coords, users, openChat,
+  admin, coords, users, openChat, onChange, searchUsers,
 }) => (
   <section className="content" style={{ height: '80vh' }}>
     <div className="box">
@@ -44,7 +44,7 @@ const DashboardSection = ({
           </div>
           <div className="col-md-4">
             <RecommendedUsers admin={admin} openChat={openChat} users={users} />
-            <FindUsers/>
+            <FindUsers searchUsers={searchUsers} onChange={onChange}/>
           </div>
           <div className="col-md-6">
           </div>
@@ -59,6 +59,7 @@ const DashboardSection = ({
 DashboardSection.propTypes = {
   coords: PropTypes.object.isRequired,
   openChat: PropTypes.func.isRequired,
+  searchUsers: PropTypes.func.isRequired,
   users: PropTypes.object,
 };
 

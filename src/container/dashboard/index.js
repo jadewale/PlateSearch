@@ -13,17 +13,15 @@ import ProfileCard from '../../component/profileCard';
 
 import {
   addChat,
-  addChatMessage, approveUsers, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification,
+  addChatMessage, addUser, approveUsers, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification,
   rejectUsers,
-  removeChat,
+  removeChat, searchUsers,
   sendNotification,
   submitForm,
   submitMessage, toggleVisibiliy,
   updateFields, updateStatus, updateStatusField,
 } from './actions';
 import { makeSelector } from './selector';
-import { approveUser } from '../../actions/userActions';
-import { rejectUser } from '../../api/index';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -57,6 +55,11 @@ class Dashboard extends Component {
   onChangeFields = (evt) => {
     const { name, value } = evt.target;
     this.props.updateFields(name, value);
+  };
+
+  onChangeSearch = (evt) => {
+    const { name, value } = evt.target;
+    this.props.searchUsers(value);
   };
 
   onCloseNotification = () => {
@@ -132,6 +135,11 @@ class Dashboard extends Component {
     if (sortedData === -1) { return `${id}${email}`; }
 
     return `${email}${id}`;
+  };
+
+  searchUser = (e) => {
+    e.preventDefault();
+    debugger
   };
 
   sendChat =() => {
@@ -248,6 +256,8 @@ class Dashboard extends Component {
               users={this.props.users.allUsers}
               openChat={this.onOpenChat}
               coords={{ latitude: longitude, longitude: latitude }}
+              searchUsers={this.searchUser}
+              onChange={this.onChangeSearch}
             />
             :
             <LicenseSection
@@ -294,6 +304,7 @@ class Dashboard extends Component {
 function mapDispatchToProps(dispatch) {
   return {
     addChat: (id, value, userId) => dispatch(addChat(id, value, userId)),
+    addUser: (user) => dispatch(addUser(user)),
     approveUsers: (id) => dispatch(approveUsers(id)),
     addChatMessage: (message) => dispatch(addChatMessage(message)),
     fetchChatMessage: (id, userId) => dispatch(fetchChatMessage(id, userId)),
@@ -303,6 +314,7 @@ function mapDispatchToProps(dispatch) {
     rejectUsers: (id) => dispatch(rejectUsers(id)),
     remove: () => dispatch(removeChat()),
     registerPushNotification: (id) => dispatch(registerPushNotification(id)),
+    searchUsers: (users) => dispatch(searchUsers(users)),
     sendNotification: (token, body) => dispatch(sendNotification(token, body)),
     submitForm: (data, id) => dispatch(submitForm(data, id)),
     submitMessage: (message, id, userProfile) => dispatch(submitMessage(message, id, userProfile)),
@@ -320,6 +332,7 @@ function mapStateToProps(state) {
 Dashboard.propTypes = {
   addChat: PropTypes.func.isRequired,
   addChatMessage: PropTypes.func.isRequired,
+  addUser: PropTypes.func.isRequired,
   admin: PropTypes.shape({
     adminProfile: PropTypes.shape({
       email: PropTypes.string,
@@ -344,6 +357,7 @@ Dashboard.propTypes = {
   user: PropTypes.shape({
     userProfile: PropTypes.object,
   }).isRequired,
+  searchUsers: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
   status: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,

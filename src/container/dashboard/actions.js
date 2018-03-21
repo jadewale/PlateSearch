@@ -2,7 +2,7 @@ import {
   ADD_CHAT, REMOVE_CHAT, GET_WEATHER, GET_WEATHER_SUCCESS, UPDATE_FIELDS,
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
   PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
-  UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS,
+  UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS, SEARCH_USERS, ADD_USER,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -32,6 +32,20 @@ export function submitForm(formData, id) {
     type: CREATE_LICENSE,
     formData,
     id,
+  };
+}
+
+export function searchUsers(data) {
+  return {
+    type: SEARCH_USERS,
+    data,
+  };
+}
+
+export function addUser(data) {
+  return {
+    type: ADD_USER,
+    data,
   };
 }
 
