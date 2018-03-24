@@ -7,7 +7,10 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: https://931453811831.dkr.ecr.us-east-2.amazonaws.com/plate-search
+      - image: 931453811831.dkr.ecr.us-east-2.amazonaws.com/plate-search
+        auth:
+         username: $username
+         password: $password
         aws_auth:
           aws_access_key_id:  $AWS_ACCESS_KEY_ID
           aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
