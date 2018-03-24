@@ -55,14 +55,15 @@ workflows:
   version: 2
   main:
     jobs:
-    context: variables
       - build:
+          context: variables
           filters:
             tags:
               only: /^\d{4}\.\d+$/
       - deploy:
           requires:
             - build
+          context: variables
           filters:
             branches:
               ignore: /.*/
