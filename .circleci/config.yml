@@ -36,6 +36,8 @@ jobs:
       # run tests!
       - run: yarn test
   deploy:
+      docker:
+        - image: node:8
       steps:
         - run:
             name: "Deploy"
