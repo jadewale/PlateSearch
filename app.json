@@ -33,7 +33,7 @@
   "environments": {
     "test": {
       "scripts": {
-        "test": "yarn run test"
+        "test": "docker container run -it -v $(pwd):/app react:app test"
       }
     }
   }
