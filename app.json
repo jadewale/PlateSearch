@@ -29,12 +29,5 @@
       "size": "Performance-M"
     }
   },
-  "image": "node:8",
-  "environments": {
-    "test": {
-      "scripts": {
-        "test": "docker container run -it -v $(pwd):/app react:app test"
-      }
-    }
-  }
+  "image": "node:8"
 }
