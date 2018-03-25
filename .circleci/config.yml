@@ -56,9 +56,5 @@ workflows:
           requires:
             - build
           context: variables
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^\d{4}\.\d+$/
+     
 
