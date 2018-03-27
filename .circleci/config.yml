@@ -9,6 +9,7 @@ jobs:
       # specify the version you desire here
       - image: node:8
 
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -39,9 +40,14 @@ jobs:
       docker:
         - image: node:8
       steps:
-        - run:
-            name: "Deploy"
-            command: heroku container:push web
+            - checkout
+            - run:
+                name: Deploy Master to Heroku
+                command: |  # this command is framework-dependent and may vary
+                  heroku git:remote -a react-app-practice
+                  heroku container:push web
+                  sleep 5  # sleep for 5 seconds to wait for dynos
+                  heroku restart
 
 workflows:
   version: 2
