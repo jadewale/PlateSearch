@@ -283,7 +283,9 @@ class Dashboard extends Component {
 
 
     const showSearch = this.props.user.userProfile.verified;
-    const { displayName, longitude, latitude } = this.props.user.userProfile;
+    const {
+      displayName, longitude, latitude, offence,
+    } = this.props.user.userProfile;
     const { length } = this.props.chat.chatData.chatOrder;
 
     if (!longitude || !latitude) {
@@ -305,7 +307,7 @@ class Dashboard extends Component {
             <h1>
               Welcome
             </h1>
-            Please Upload your License for Approval
+            { offence ? <span className="text-danger">Your Offence is {offence}</span> : 'Please Upload your License for Approval'}
           </section>
           { showSearch ?
             <DashboardSection
