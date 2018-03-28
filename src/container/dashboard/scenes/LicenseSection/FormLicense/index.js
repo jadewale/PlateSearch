@@ -77,7 +77,7 @@ const FormLicense = ({
           </div>
           <ReadOnlyFormGroup onChangeFields={onChangeFields} type="text" email={name} display="Name" name="name" />
           <ReadOnlyFormGroup onChangeFields={onChangeFields} type="email" email={email} display="Email" name="email" />
-          <FormGroup onChangeFields={onChangeFields} type="text"  pattern={'^[A-Z]{3}[-]\\d{3}[A-Z]{2}$'} display="License Plate" name="license" />
+          <FormGroup onChangeFields={onChangeFields} type="text"  pattern={'^[a-zA-Z]{3}[-]\\d{3}[a-zA-Z]{2}$'} display="License Plate" name="license" />
           <FormGroup onChangeFields={onChangeFields} type="text" display="Car Model" name="model" />
           <FormGroup onChangeFields={onFile} type="file" display="Upload License" name="upload" />
           <FormGroup onChangeFields={onChangeFields} type="date" display="Expiration Date" name="expiration" />

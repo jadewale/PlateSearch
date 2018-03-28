@@ -74,7 +74,7 @@ class Dashboard extends Component {
     }
   };
 
-  onLicenseValidation = (license) => license.match(/^[A-Z]{3}[-]\d{3}[A-Z]{2}$/g);
+  onLicenseValidation = (license) => license.match(/^[a-zA-Z]{3}[-]\d{3}[a-zA-Z]{2}$/g);
 
   onDateValidation = (date) => date.match(/^\d{4}([./-])\d{2}\1\d{2}$/g);
 
