@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux-immutable';
 import { List, Map, fromJS } from 'immutable';
 import {
-  ADD_CHAT, ADD_CHAT_MESSAGE, ADD_USER, DISMISS_NOTIFICATION, FETCH_USERS_SUCCESS, GET_WEATHER_SUCCESS,
+  ADD_CHAT, ADD_CHAT_MESSAGE, ADD_USER, DISMISS_NOTIFICATION, ERROR_MESSAGES, FETCH_USERS_SUCCESS, GET_WEATHER_SUCCESS,
   RECEIVE_MESSAGE_SUCCESS,
   REMOVE_CHAT, SEARCH_USERS,
   SEND_MESSAGE, SET_NOTIFICATION,
@@ -118,10 +118,20 @@ export function status(state = Map(makeImmutable({})), action) {
   }
 }
 
+export function error(state = Map(makeImmutable({})), action) {
+  switch (action.type) {
+    case ERROR_MESSAGES:
+      return state.setIn(['message'], action.msg);
+    default:
+      return state;
+  }
+}
+
 
 export default combineReducers({
   weather,
   chat,
+  error,
   messages,
   notification,
   data,

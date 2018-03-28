@@ -50,3 +50,5 @@ export const UPDATE_ADMIN_SIGN_UP = 'UPDATE_ADMIN_SIGN_UP';
 export const REJECT_USERS = 'REJECT_USERS';
 export const SEARCH_USERS = 'SEARCH_USERS';
 export const ADD_USER = 'ADD_USER';
+export const ERROR_MESSAGES = 'ERROR_MESSAGES';
+export const UPDATE_OFFENCE = 'UPDATE_OFFENCE';

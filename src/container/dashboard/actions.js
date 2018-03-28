@@ -2,7 +2,8 @@ import {
   ADD_CHAT, REMOVE_CHAT, GET_WEATHER, GET_WEATHER_SUCCESS, UPDATE_FIELDS,
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
   PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
-  UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS, SEARCH_USERS, ADD_USER,
+  UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS, SEARCH_USERS, ADD_USER, ERROR_MESSAGES,
+  UPDATE_OFFENCE,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -169,6 +170,21 @@ export function approveUsers(id) {
 export function rejectUsers(id) {
   return {
     type: REJECT_USERS,
+    id,
+  };
+}
+
+export function addErrorMessages(msg) {
+  return {
+    type: ERROR_MESSAGES,
+    msg,
+  };
+}
+
+export function updateOffence(offence, id) {
+  return {
+    type: UPDATE_OFFENCE,
+    offence,
     id,
   };
 }

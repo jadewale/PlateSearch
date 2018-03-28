@@ -82,7 +82,6 @@ function uploadFile(file, cloudName = 'dd58mfinr', unsignedUploadPreset = 'sw64g
         .set({ ...data, file: fileUrl }, { merge: true })
         .then((docRef) => {
           resolve(docRef);
-          console.log('Document written with ID: ', docRef.id);
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
@@ -112,6 +111,12 @@ export function updateUserStatus(id, status) {
   return firebase.firestore()
     .collection('user')
     .doc(id).set({ status }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+
+export function updateOffence(id, offence) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({ offence }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
 export function updateVisibilityStatus(id, visible) {

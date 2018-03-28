@@ -5,6 +5,7 @@ import {
   getWeather as weatherAPI,
   rejectUser as rejectUserAPI,
   saveLicense as saveLicenseAPI,
+  updateOffence as updateOffenceAPI,
   updateUserStatus as updateStatusAPI,
   updateVisibilityStatus as statusAPI,
   updateGeoLocation as updateLocationAPI,
@@ -18,7 +19,7 @@ import {
 import {
   APPROVE_USER,
   CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, REJECT_USERS, SEND_MESSAGE,
-  SEND_NOTIFICATION, UPDATE_STATUS, UPDATE_VISIBILITY,
+  SEND_NOTIFICATION, UPDATE_OFFENCE, UPDATE_STATUS, UPDATE_VISIBILITY,
 } from '../../constants';
 import {
   getWeatherSuccess, fetchUsersSuccess, addChat,
@@ -80,6 +81,7 @@ function* saveLicenseData(action) {
     const file = action.formData.upload;
     delete action.formData.upload;
     const response = yield call(saveLicenseAPI, action.formData, file[0], action.id);
+    yield put(fetchAllUsers());
     // yield put();
   } catch (e) {
     console.log(e);
@@ -109,6 +111,7 @@ function* sendPushNotification(action) {
 function* updateStatus(action) {
   try {
     yield call(updateStatusAPI, action.id, action.status);
+    yield put(fetchAllUsers());
   } catch (e) {
     console.log(e);
   }
@@ -117,6 +120,7 @@ function* updateStatus(action) {
 function* updateVisibility(action) {
   try {
     yield call(statusAPI, action.id, action.visible);
+    yield put(fetchAllUsers());
   } catch (e) {
     console.log(e);
   }
@@ -133,9 +137,11 @@ function* getMapData(action) {
   }
 }
 
-function* receiveChat() {
+function* updateOffence(action) {
   try {
-
+    yield call(updateOffenceAPI, action.id, action.offence);
+    yield put(fetchAllUsers());
+    debugger;
   } catch (e) {
     console.log(e);
   }
@@ -153,4 +159,5 @@ export default [].concat(
   takeLatest(FETCH_GOOGLE_MAPS, getMapData), // eslint-disable-line
   takeLatest(APPROVE_USER, approveUser), // eslint-disable-line
   takeLatest(REJECT_USERS, rejectUser), // eslint-disable-line
+  takeLatest(UPDATE_OFFENCE, updateOffence) // eslint-disable-line
 );

@@ -13,13 +13,14 @@ import ProfileCard from '../../component/profileCard';
 
 import {
   addChat,
-  addChatMessage, addUser, approveUsers, fetchChatMessage, fetchUsers, getMapData, getWeather, registerPushNotification,
+  addChatMessage, addErrorMessages, addUser, approveUsers, fetchChatMessage, fetchUsers, getMapData, getWeather,
+  registerPushNotification,
   rejectUsers,
   removeChat, searchUsers,
   sendNotification,
   submitForm,
   submitMessage, toggleVisibiliy,
-  updateFields, updateStatus, updateStatusField,
+  updateFields, updateOffence, updateStatus, updateStatusField,
 } from './actions';
 import { makeSelector } from './selector';
 
@@ -54,11 +55,48 @@ class Dashboard extends Component {
 
   onChangeFields = (evt) => {
     const { name, value } = evt.target;
-    this.props.updateFields(name, value);
+    const valid = this.onCheckValidation(name, value);
+    if (valid) {
+      this.props.updateFields(name, value);
+      this.props.addErrorMessage('');
+      return;
+    }
+    this.props.addErrorMessage(`Invalid ${name} 
+      Data passed in. Format should be ${this.onShowErrorMessage(name)}`);
+  };
+
+  onCheckValidation = (data, value) => {
+    switch (data) {
+      case 'expiration': return (this.onDateValidation(value) && this.onPresentDateValidation(value));
+      case 'license': return this.onLicenseValidation(value.trim());
+      default:
+        return true;
+    }
+  };
+
+  onLicenseValidation = (license) => license.match(/^[A-Z]{3}[-]\d{3}[A-Z]{2}$/g);
+
+  onDateValidation = (date) => date.match(/^\d{4}([./-])\d{2}\1\d{2}$/g);
+
+  onPresentDateValidation = (dateString) => new Date(dateString) > new Date();
+
+  onChangeOffence = (evt, id) => {
+    let { value } = evt.target;
+    if (value === '--clear--') { value = ''; }
+    this.props.updateOffence(value, id);
+  };
+
+  onShowErrorMessage = (data) => {
+    switch (data) {
+      case 'expiration': return '(DD/MM/YYYY) and should be greater than today';
+      case 'license': return 'AAA-111MD';
+      default:
+        return '';
+    }
   };
 
   onChangeSearch = (evt) => {
-    const { name, value } = evt.target;
+    const { value } = evt.target;
     this.props.searchUsers(value);
     this.props.addUser([]);
   };
@@ -93,6 +131,7 @@ class Dashboard extends Component {
     evt.preventDefault();
     const { data } = this.props.data;
     const valid = this.validateForm(data);
+
     const { email } = this.props.user.userProfile;
     (valid) ? this.props.submitForm(data, email) : this.handleFormError();
   };
@@ -108,6 +147,7 @@ class Dashboard extends Component {
 
   approveUser = (evt, id) => {
     evt.preventDefault();
+    this.props.remove();
     this.props.approveUsers(id);
   };
 
@@ -175,10 +215,17 @@ class Dashboard extends Component {
   validateForm = (data) => {
     const { length } = Object.keys(data);
 
-    if (length === 3) {
+    if (length >= 3) {
       const error = [];
       Object.keys(data).filter((obj) => {
         const props = data[obj];
+        const errorResponse = this.onCheckValidation(obj, data[obj]);
+
+        if (!errorResponse) {
+          this.props.addErrorMessage(`Invalid ${obj} 
+            Data passed in. Format should be ${this.onShowErrorMessage(data[obj])}`);
+          error.push(obj);
+        }
         if (!props) {
           error.push(obj);
         }
@@ -224,6 +271,7 @@ class Dashboard extends Component {
                 key={index.toString()}
                 data={this.props.users.allUsers[obj]}
                 onClose={this.onRemove}
+                onChangeOffence={this.onChangeOffence}
               />))}
             </div>
           </div>
@@ -276,6 +324,7 @@ class Dashboard extends Component {
               onSubmit={this.onSubmit}
               email={email}
               name={displayName}
+              error={this.props.error}
             />
           }
           <div>
@@ -316,6 +365,7 @@ function mapDispatchToProps(dispatch) {
     addUser: (user) => dispatch(addUser(user)),
     approveUsers: (id) => dispatch(approveUsers(id)),
     addChatMessage: (message) => dispatch(addChatMessage(message)),
+    addErrorMessage: (msg) => dispatch(addErrorMessages(msg)),
     fetchChatMessage: (id, userId) => dispatch(fetchChatMessage(id, userId)),
     fetchUsers: () => dispatch(fetchUsers()),
     getWeather: (city) => dispatch(getWeather(city)),
@@ -329,6 +379,7 @@ function mapDispatchToProps(dispatch) {
     submitMessage: (message, id, userProfile) => dispatch(submitMessage(message, id, userProfile)),
     toggleVisibility: (id, status) => dispatch(toggleVisibiliy(id, status)),
     updateFields: (keyPath, value) => dispatch(updateFields(keyPath, value)),
+    updateOffence: (keyPath, value) => dispatch(updateOffence(keyPath, value)),
     updateStatusField: (value) => dispatch(updateStatusField(value)),
     updateStatus: (id, status) => dispatch(updateStatus(id, status)),
   };
@@ -349,10 +400,14 @@ Dashboard.propTypes = {
       error: PropTypes.string,
     }),
   }).isRequired,
+  addErrorMessage: PropTypes.func.isRequired,
   approveUsers: PropTypes.func.isRequired,
   chat: PropTypes.shape({
     chatData: PropTypes.object,
   }).isRequired,
+  error: PropTypes.shape(({
+    message: PropTypes.string,
+  })).isRequired,
   getLocation: PropTypes.func.isRequired,
   fetchChatMessage: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
@@ -373,6 +428,7 @@ Dashboard.propTypes = {
   submitMessage: PropTypes.func.isRequired,
   toggleVisibility: PropTypes.func.isRequired,
   updateFields: PropTypes.func.isRequired,
+  updateOffence: PropTypes.func.isRequired,
   updateStatus: PropTypes.func.isRequired,
   updateStatusField: PropTypes.func.isRequired,
   data: PropTypes.shape({
