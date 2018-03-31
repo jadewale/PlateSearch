@@ -10,7 +10,7 @@ const UnverifiedUser = () => (
 const LicenseSection = ({
   verified, onChangeFields, onFile, error, onSubmit, email, name,
 }) => (
-  <section className="content" style={{ height: '80vh' }}>
+  <section className="content">
     <div className="box">
       <div className="box-header with-border">
         <h3 className="box-title">Files</h3>

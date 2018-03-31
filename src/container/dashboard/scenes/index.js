@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Chat from './scenes/DashboardSection/Chat';
-import DashboardSection from '../dashboard/scenes/DashboardSection';
-import LicenseSection from '../dashboard/scenes/LicenseSection';
-import Header from '../../component/header';
-import Sidebar from '../../component/sideNav';
-import Footer from '../../component/footer';
-import Notification from '../../component/notification';
-import ProfileCard from '../../component/profileCard';
+import { Redirect, withRouter } from 'react-router-dom';
+import AuthService from '../../../services/AuthService';
 
 import {
   addChat,
@@ -21,8 +14,11 @@ import {
   submitForm,
   submitMessage, toggleVisibiliy,
   updateFields, updateOffence, updateStatus, updateStatusField,
-} from './actions';
-import { makeSelector } from './selector';
+} from '../actions';
+import { makeSelector } from '../selector';
+import Admin from '../../admin/scenes/dashboard/index';
+import Users from '../../user/scenes/dashboard';
+import { updateGeoLocationAddress } from '../../user/actions';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -110,6 +106,14 @@ class Dashboard extends Component {
     this.props.updateFields(name, files);
   };
 
+  onLogout = (e) => {
+    e.preventDefault();
+    const logout = window.confirm('Are you sure you want to logout');
+    if (logout) {
+      AuthService.logout();
+    }
+  };
+
   onOpenChat =(id) => {
     const { email } = this.getEmail();
     if (email) {
@@ -181,12 +185,14 @@ class Dashboard extends Component {
   searchUser = (e) => {
     e.preventDefault();
     const key = this.props.users.search;
+
     const values = Object.values(this.props.users.allUsers).filter((obj) => {
       if (obj.verified && obj.license && obj.license.toLowerCase() === key.toLowerCase()) {
         return true;
       }
       return false;
     });
+
     this.props.addUser(values);
   };
 
@@ -236,127 +242,63 @@ class Dashboard extends Component {
   };
 
   render() {
+
+    if (!AuthService.isAuthenticated) {
+      return <Redirect to="login" />;
+    }
+
     const adminEmail = this.props.admin.adminProfile.email;
     const { email } = this.getEmail();
     if (adminEmail && !email) {
       return (
-        <div className="skin-blue sidebar-mini wrapper sidebar-collapse">
-          <Header toggle={this.onToggleDashboard} />
-          <Sidebar
-            photoUrl=""
-            onSubmit={() => {}}
-            onChange={() => {}}
-            status="Admin User"
-          />
-          <div className="content-wrapper">
-            <section className="content-header">
-              <h1>
-                Welcome
-              </h1>
-              Admin Section
-            </section>
-            <DashboardSection
-              users={this.props.users.allUsers}
-              openChat={this.onOpenChat}
-              admin
-              coords={{
-                latitude: this.props.weather[0].coord.lat,
-                longitude: this.props.weather[0].coord.lon,
-              }}
-            />
-            <div>
-              {this.props.chat.chatData.chatOrder.map((obj, index) => (<ProfileCard
-                approve={this.approveUser}
-                reject={this.rejectUser}
-                key={index.toString()}
-                data={this.props.users.allUsers[obj]}
-                onClose={this.onRemove}
-                onChangeOffence={this.onChangeOffence}
-              />))}
-            </div>
-          </div>
-          <Footer />
-          <div className="control-sidebar-bg"></div>
-        </div>
+        <Admin
+          func={{
+            approveUser: this.approveUser,
+            rejectUser: this.rejectUser,
+            onToggleDashboard: this.onToggleDashboard,
+            onOpenChat: this.onOpenChat,
+            onRemove: this.onRemove,
+            onChangeOffence: this.onChangeOffence,
+            onLogout: this.onLogout,
+          }}
+          variables={{
+            users: this.props.users,
+            weather: this.props.weather[0].coord,
+            chatOrder: this.props.chat.chatData.chatOrder,
+          }}
+        />
       );
     }
 
-
-    const showSearch = this.props.user.userProfile.verified;
-    const {
-      displayName, longitude, latitude, offence,
-    } = this.props.user.userProfile;
-    const { length } = this.props.chat.chatData.chatOrder;
-
-    if (!longitude || !latitude) {
-      // latitude = this.props.weather[0].coord.latitude;
-      // longitude = this.props.weather[0].coord.longitude;
-    }
-
     return (
-      <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
-        <Header toggle={this.onToggleDashboard} />
-        <Sidebar
-          photoUrl={this.props.user.userProfile.photoURL}
-          onSubmit={this.updateStatus}
-          onChange={this.changeStatusField}
-          status={this.props.user.userProfile.status}
-        />
-        <div className="content-wrapper">
-          <section className="content-header">
-            <h1>
-              Welcome
-            </h1>
-            { offence ? <span className="text-danger">Your Offence is {offence}</span> : 'Please Upload your License for Approval'}
-          </section>
-          { showSearch ?
-            <DashboardSection
-              users={this.props.users.allUsers}
-              openChat={this.onOpenChat}
-              coords={{ latitude: longitude, longitude: latitude }}
-              searchUsers={this.searchUser}
-              onChange={this.onChangeSearch}
-              display={this.props.users.display && this.props.users.display[0]}
-            />
-            :
-            <LicenseSection
-              verified={showSearch}
-              onChangeFields={this.onChangeFields}
-              onFile={this.onFileChange}
-              onSubmit={this.onSubmit}
-              email={email}
-              name={displayName}
-              error={this.props.error}
-            />
-          }
-          <div>
-            {this.props.chat.chatData.chatOrder.map((obj, index) => (<Chat
-              onChat={this.onChat}
-              input={this.props.chat.chatData.message}
-              sendChat={this.sendChat}
-              key={index.toString()}
-              messages={this.props.chat.chatData[obj]}
-              name={displayName}
-              onRemove={this.onRemove}
-              count={(length)}
-            />))}
-          </div>
-          <div>
-            { (this.props.notification.notif && this.props.notification.notif.body) ?
-              <Notification
-                onClick={this.onOpenNotification}
-                id={this.props.notification.notif.body.email}
-                name={this.props.notification.notif.body.displayName}
-                message={this.props.notification.notif.body.message}
-                onClose={this.onCloseNotification}
-              />
-              : null
-            }
-          </div>
-        </div>
-        <Footer />
-        <div className="control-sidebar-bg"></div>
-      </div>
+      <Users
+        func={{
+          updateStatus: this.updateStatus,
+          changeStatusField: this.changeStatusField,
+          onOpenChat: this.onOpenChat,
+          searchUser: this.searchUser,
+          onChangeSearch: this.onChangeSearch,
+          onChangeFields: this.onChangeFields,
+          onFileChange: this.onFileChange,
+          onSubmit: this.onSubmit,
+          onChat: this.onChat,
+          sendChat: this.sendChat,
+          onLogout: this.onLogout,
+          onRemove: this.onRemove,
+          onOpenNotification: this.onOpenNotification,
+          onCloseNotification: this.onCloseNotification,
+          onToggleDashboard: this.onToggleDashboard,
+          updateGeolocationAddress: this.props.updateGeolocationAddress,
+        }}
+        variables={{
+          error: this.props.error,
+          collapse: this.state.collapse,
+          userProfile: this.props.user.userProfile,
+          chatData: this.props.chat.chatData,
+          users: this.props.users,
+          notification: this.props.notification,
+        }}
+      />
     );
   }
 }
@@ -381,6 +323,7 @@ function mapDispatchToProps(dispatch) {
     submitMessage: (message, id, userProfile) => dispatch(submitMessage(message, id, userProfile)),
     toggleVisibility: (id, status) => dispatch(toggleVisibiliy(id, status)),
     updateFields: (keyPath, value) => dispatch(updateFields(keyPath, value)),
+    updateGeolocationAddress: (id, address) => dispatch(updateGeoLocationAddress(id, address)),
     updateOffence: (keyPath, value) => dispatch(updateOffence(keyPath, value)),
     updateStatusField: (value) => dispatch(updateStatusField(value)),
     updateStatus: (id, status) => dispatch(updateStatus(id, status)),
@@ -431,6 +374,7 @@ Dashboard.propTypes = {
   toggleVisibility: PropTypes.func.isRequired,
   updateFields: PropTypes.func.isRequired,
   updateOffence: PropTypes.func.isRequired,
+  updateGeolocationAddress: PropTypes.func.isRequired,
   updateStatus: PropTypes.func.isRequired,
   updateStatusField: PropTypes.func.isRequired,
   data: PropTypes.shape({

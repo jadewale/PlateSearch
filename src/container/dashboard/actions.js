@@ -3,7 +3,7 @@ import {
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
   PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
   UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS, SEARCH_USERS, ADD_USER, ERROR_MESSAGES,
-  UPDATE_OFFENCE,
+  UPDATE_OFFENCE, FETCH_USER,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -53,6 +53,13 @@ export function addUser(data) {
 export function fetchUsers() {
   return {
     type: FETCH_USERS,
+  };
+}
+
+export function fetchUser(email) {
+  return {
+    type: FETCH_USER,
+    email,
   };
 }
 

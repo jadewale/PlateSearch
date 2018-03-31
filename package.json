@@ -12,6 +12,7 @@
     "react": "^16.2.0",
     "react-chat-widget": "^2.1.2",
     "react-dom": "^16.2.0",
+    "react-geocode": "^0.0.7",
     "react-geolocated": "^2.3.0",
     "react-google-maps": "^9.4.5",
     "react-modal": "^3.1.12",

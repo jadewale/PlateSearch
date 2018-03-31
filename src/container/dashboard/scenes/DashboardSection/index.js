@@ -5,12 +5,12 @@ import RecommendedUsers from './RecommendedUsers';
 import FindUsers from './FindUsers';
 
 const DashboardSection = ({
-  admin, coords, display, users, openChat, onChange, searchUsers,
+  admin, coords, display, users, openChat, onChange, searchUsers, address,
 }) => (
-  <section className="content" style={{ height: '80vh' }}>
+  <section className="content">
     <div className="box">
       <div className="box-header with-border">
-        <h3 className="box-title">Title</h3>
+        <h3 className="box-title">{ address || ''}</h3>
 
         <div className="box-tools pull-right">
           <button
@@ -57,6 +57,7 @@ const DashboardSection = ({
 );
 
 DashboardSection.propTypes = {
+  address: PropTypes.string,
   coords: PropTypes.object.isRequired,
   display: PropTypes.array,
   openChat: PropTypes.func.isRequired,
@@ -66,6 +67,7 @@ DashboardSection.propTypes = {
 };
 
 DashboardSection.defaultProps = {
+  address: '',
   users: {},
   display: {},
 };

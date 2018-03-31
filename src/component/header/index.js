@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Header = ({ toggle }) => (
+const Header = ({ toggle, prompt }) => (
   <header className="main-header">
     <a href="#" className="logo">
       <span className="logo-mini"><b>P</b>M</span>
@@ -17,6 +17,11 @@ const Header = ({ toggle }) => (
 
       <div className="navbar-custom-menu">
         <ul className="nav navbar-nav">
+          <li className="dropdown messages-menu">
+            <a href="#" onClick={prompt} className="dropdown-toggle" data-toggle="tooltip" data-placement="left" title="Logout" aria-expanded="false">
+              <i className="fa fa-sign-out"></i>
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -24,6 +29,7 @@ const Header = ({ toggle }) => (
 );
 
 Header.propTypes = {
+  prompt: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
 };
 

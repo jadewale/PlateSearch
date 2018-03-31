@@ -1,8 +1,10 @@
 import firebase from 'firebase';
 import axios from 'axios';
+import AuthService from '../services/AuthService';
 import { FACEBOOK } from '../constants';
 import { secretKey } from '../secret';
 require('firebase/firestore');
+
 
 const config = secretKey();
 firebase.initializeApp(config);
@@ -28,6 +30,7 @@ export function authenticator(providerType) {
         .collection('user')
         .where('email', '==', email);
       query.get().then((querySnapshot) => {
+        AuthService.isAuthenticated = true;
         const size = querySnapshot.size;
         if (size === 0) {
           const data = {
@@ -107,6 +110,12 @@ export function fetchAllusers() {
   });
 }
 
+export function fetchUser(email) {
+  return firebase.firestore()
+    .collection('user')
+    .where('email', '==', email).get().then((querySnapshot) => querySnapshot.docs[0].data());
+}
+
 export function updateUserStatus(id, status) {
   return firebase.firestore()
     .collection('user')
@@ -123,6 +132,11 @@ export function updateVisibilityStatus(id, visible) {
   return firebase.firestore()
     .collection('user')
     .doc(id).set({ visible }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+
+export function updateGeoLocationAddress(id, address) {
+  return firebase.firestore()
+    .collection('user').doc(id).set({ address }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
 export function updateGeoLocation(coords, id) {

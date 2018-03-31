@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Login from './scenes/Login';
-import { googleSignIn, facebookSignIn } from './actions';
-import { makeSelector } from './selector';
+import Login from './Login/index';
+import { googleSignIn, facebookSignIn } from '../actions';
+import { makeSelector } from '../selector';
 
 class User extends Component {
   /*

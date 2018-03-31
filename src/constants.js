@@ -52,3 +52,5 @@ export const SEARCH_USERS = 'SEARCH_USERS';
 export const ADD_USER = 'ADD_USER';
 export const ERROR_MESSAGES = 'ERROR_MESSAGES';
 export const UPDATE_OFFENCE = 'UPDATE_OFFENCE';
+export const FETCH_USER = 'FETCH_USER';
+export const UPDATE_USER_LOCATION = 'UPDATE_USER_LOCATION';

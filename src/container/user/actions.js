@@ -2,7 +2,7 @@ import {
   FACEBOOK_SIGN,
   GOOGLE_SIGN,
   FACEBOOKSUCCESS,
-  GOOGLESUCCESS, SIGN_UP, UPDATE_ADMIN_SIGN_UP,
+  GOOGLESUCCESS, SIGN_UP, UPDATE_ADMIN_SIGN_UP, UPDATE_USER_LOCATION,
 } from '../../constants';
 
 export function facebookSignIn() {
@@ -36,6 +36,14 @@ export function updateAdminSignUp(keyPath, value) {
     type: UPDATE_ADMIN_SIGN_UP,
     keyPath,
     value,
+  };
+}
+
+export function updateGeoLocationAddress(id, address) {
+  return {
+    type: UPDATE_USER_LOCATION,
+    id,
+    address,
   };
 }
 
