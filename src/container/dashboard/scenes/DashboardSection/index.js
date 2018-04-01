@@ -36,7 +36,7 @@ const DashboardSection = ({
                 lat: coords.latitude,
                 lng: coords.longitude,
               }}
-              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3"
+              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3key=AIzaSyAlI8N49LxlVUexUywuoR2CtukrbVKNbY4"
               loadingElement={<div>Loading</div>}
               allUsers={users}
               containerElement={<div style={{ height: '400px' }} />}
