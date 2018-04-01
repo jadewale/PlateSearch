@@ -8,9 +8,9 @@ const UnverifiedUser = () => (
 );
 
 const LicenseSection = ({
-  verified, onChangeFields, onFile, onSubmit, email, name,
+  verified, onChangeFields, onFile, error, onSubmit, email, name,
 }) => (
-  <section className="content" style={{ height: '80vh' }}>
+  <section className="content">
     <div className="box">
       <div className="box-header with-border">
         <h3 className="box-title">Files</h3>
@@ -33,7 +33,7 @@ const LicenseSection = ({
       <div className="box-body">
         <div className="row">
           <div className="col-md-8">
-            <FormLicense onChangeFields={onChangeFields} name={name} email={email} onFile={onFile} onSubmit={onSubmit} />
+            <FormLicense onChangeFields={onChangeFields} error={error} name={name} email={email} onFile={onFile} onSubmit={onSubmit} />
           </div>
           <div className="col-md-4">
             {verified ? <SearchLicense /> : <UnverifiedUser />}
@@ -51,6 +51,7 @@ const LicenseSection = ({
 LicenseSection.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  error: PropTypes.string.isRequired,
   onChangeFields: PropTypes.func.isRequired,
   onFile: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,

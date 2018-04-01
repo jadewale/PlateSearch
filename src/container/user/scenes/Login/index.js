@@ -8,7 +8,7 @@ const Login = ({ faceBookSignUp, googleSignUp }) => (
       <a href="/"><b>Plate</b>ME</a>
     </div>
     <div className="login-box-body">
-      <p className="login-box-msg">Welcome to PlateMe by Oliver Cole. Please Sign in to start your session</p>
+      <p className="login-box-msg">Welcome to PlateMe. Please Sign in to start your session</p>
       <div className="social-auth-links text-center">
         <button onClick={faceBookSignUp} className="btn btn-block btn-social btn-facebook btn-flat"><i className="fa fa-facebook"></i> Sign in using
           Facebook

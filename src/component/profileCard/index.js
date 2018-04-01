@@ -1,8 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+
+const OffencesCard = ({ onChangeOffence, id }) => (
+  <div className="form-group">
+    <label>Traffic Offence</label>
+    <select onChange={(event) => onChangeOffence(event, id)} className="form-control select2 select2-hidden-accessible" style={{ width: '100%' }} tabIndex="-1" aria-hidden="true">
+      <option>Drunk Driving</option>
+      <option>One Way</option>
+      <option>WrecklessNess</option>
+      <option>Fugitive</option>
+      <option>--clear--</option>
+    </select>
+  </div>
+);
+
+OffencesCard.propTypes = {
+  onChangeOffence: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+};
+
 const ProfileCard = ({
-  data, onClose, approve, reject,
+  data, onClose, approve, reject, onChangeOffence,
 }) => (
   <div
     style={{
@@ -14,9 +33,11 @@ const ProfileCard = ({
     }}
   >
     <div className="box box-widget widget-user">
-      <div className="widget-user-header bg-aqua-active">
+      <div className={`widget-user-header ${(data.offence) ? 'bg-red-active' : 'bg-aqua-active'}`}>
         <h3 className="widget-user-username">{ data.displayName || data.email }</h3>
         <h5 className="widget-user-desc">{ data.status || 'No Status' }</h5>
+        <p className="widget-user-desc">  { data.licenseMessage} </p>
+        <p className="widget-user-desc">  { data.offence} </p>
         <div className="box-tools pull-right">
           <button type="button" onClick={onClose} className="btn btn-box-tool" data-widget="remove"><i className="fa fa-times"></i>
           </button>
@@ -42,9 +63,9 @@ const ProfileCard = ({
           </div>
           <div className="col-sm-4 border-right">
             <div className="description-block">
-              <h5 className="description-header">Status</h5>
+              <h5 className={`description-header ${(data.verified) ? 'hide' : ''}`}>Status</h5>
               <span className="description-text">
-                { (data.verified) ? 'Verified' : 'Not Verified' }
+                { (data.verified) ? <OffencesCard id={data.email} onChangeOffence={onChangeOffence} /> : 'Not Verified' }
               </span>
             </div>
           </div>
@@ -67,11 +88,13 @@ ProfileCard.propTypes = {
   data: PropTypes.shape({
     displayName: PropTypes.string,
     email: PropTypes.string,
+    licenseMessage: PropTypes.string,
     photoURL: PropTypes.string,
     status: PropTypes.bool,
     visible: PropTypes.bool,
   }).isRequired,
   onClose: PropTypes.func.isRequired,
+  onChangeOffence: PropTypes.func.isRequired,
   reject: PropTypes.func.isRequired,
 };
 

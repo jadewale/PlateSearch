@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { updateAdminSignUp } from '../../actions';
-import { makeSelector } from '../../selector';
+import { updateAdminSignUp } from '../../../user/actions';
+import { makeSelector } from '../../../user/selector';
 
 class SignUp extends Component {
   signUpForm = (evt) => {

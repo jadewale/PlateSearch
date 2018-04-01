@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-let menuObject = [{ menu: 'Dashboard', children: ['Register', 'Search'], id: 1 }];
+let menuObject = [{ menu: 'Weather', children: ['weather'], id: 1 }];
+
+const margin = {
+  marginLeft: '8px',
+};
 
 function generateMenu(id) {
   menuObject = menuObject.map((data) => {
@@ -19,7 +23,7 @@ function generateMenu(id) {
 }
 
 const SideBar = ({
-  photoUrl, onChange, onSubmit, status,
+  photoUrl, onChange, onSubmit, status, weather,
 }) => (
   <aside className="main-sidebar">
     <section className="sidebar">
@@ -47,23 +51,30 @@ const SideBar = ({
           <input onChange={onChange} type="checkbox" />
           <span className="col-sm-offset-1">Visible</span>
         </li>
+
         <li className="header">MAIN NAVIGATION</li>
         {menuObject.map(((data) => (
           <li key={data} className={`treeview ${data.class}`}>
             <a onClick={() => { generateMenu(data.id); }} href="#">
-              <i className="fa fa-dashboard"></i>
-              <span>{
+              <i className={`fa ${(weather.main === 'Clouds') ? 'fa-cloud' : 'fa-sun-o'}`}></i>
+              <span style={margin}>{
                 data.menu
               }
+              </span>
+              <span style={margin}>
+                {weather.icon && weather.icon.replace('d', '')}
+                &deg;
               </span>
               <span className="pull-right-container">
                 <i className={`fa fa-angle-${data.toggle || 'right'} pull-right`}></i>
               </span>
             </a>
             <ul className="treeview-menu">
-              {data.children.map((obj) => (
-                <li key={obj}>
-                  <Link to={`/dashboard/${obj}`}><i className="fa fa-circle-o"></i>{obj} </Link>
+              {data.children.map(() => (
+                <li className="">
+                  <a className="">{`Type: ${weather.main || ''}`}</a>
+                  <a className="">{`Description:  ${weather.description || ''}`}</a>
+                  <a className="">{`Temperature:  ${weather.icon && weather.icon.replace('d', '')}`}&deg;</a>
                 </li>
               ))}
             </ul>
@@ -79,11 +90,13 @@ SideBar.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   status: PropTypes.string,
+  weather: PropTypes.object,
 };
 
 SideBar.defaultProps = {
   photoUrl: 'http://res.cloudinary.com/dd58mfinr/image/upload/v1481734664/default.png',
   status: '',
+  weather: {},
 };
 
 export default SideBar;
