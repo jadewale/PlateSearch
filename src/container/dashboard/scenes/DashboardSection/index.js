@@ -5,7 +5,7 @@ import RecommendedUsers from './RecommendedUsers';
 import FindUsers from './FindUsers';
 
 const DashboardSection = ({
-  admin, coords, display, users, openChat, onChange, searchUsers, address,
+  admin, coords, display, users, openChat, onChange, searchUsers, address,onToggleInfoDisplay,
 }) => (
   <section className="content">
     <div className="box">
@@ -36,15 +36,18 @@ const DashboardSection = ({
                 lat: coords.latitude,
                 lng: coords.longitude,
               }}
+              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3"
+              loadingElement={<div>Loading</div>}
               allUsers={users}
               containerElement={<div style={{ height: '400px' }} />}
               mapElement={<div style={{ height: '100%' }} />}
               isMarkerShown
+              onToggleInfoDisplay={onToggleInfoDisplay}
             />
           </div>
           <div className="col-md-4">
             <FindUsers openChat={openChat} display={display} searchUsers={searchUsers} onChange={onChange} />
-            <RecommendedUsers admin={admin} openChat={openChat} users={users} />
+            <RecommendedUsers admin={admin} currentLocation={{ latitude: coords.latitude, longitude: coords.longitude }} openChat={openChat} users={users} />
           </div>
           <div className="col-md-6">
           </div>
@@ -62,6 +65,7 @@ DashboardSection.propTypes = {
   display: PropTypes.array,
   openChat: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  onToggleInfoDisplay: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
   users: PropTypes.object,
 };

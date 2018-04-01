@@ -45,6 +45,7 @@ const Users = (props) => {
         onSubmit={props.func.updateStatus}
         onChange={props.func.changeStatusField}
         status={status}
+        weather={props.variables.weather}
       />
       <div className="content-wrapper">
         <section className="content-header">
@@ -67,6 +68,7 @@ const Users = (props) => {
             searchUsers={props.func.searchUser}
             onChange={props.func.onChangeSearch}
             display={props.variables.users.display && props.variables.users.display[0]}
+            onToggleInfoDisplay={props.func.onToggleInfoDisplay}
           />
           :
           <LicenseSection
@@ -103,6 +105,23 @@ const Users = (props) => {
             : null
           }
         </div>
+        <div style={{ display: 'none' }}>
+          <div className="col-lg-3 col-xs-6">
+            <div className="small-box bg-aqua">
+              <div className="inner">
+                <h3>44</h3>
+
+                <p>User Registrations</p>
+              </div>
+              <div className="icon">
+                <i className="fa fa-shopping-cart"></i>
+              </div>
+              <a href="#" className="small-box-footer">
+                More info <i className="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
       <Footer />
       <div className="control-sidebar-bg"></div>
@@ -125,6 +144,7 @@ Users.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     onOpenNotification: PropTypes.func.isRequired,
     onCloseNotification: PropTypes.func.isRequired,
+    onToggleInfoDisplay: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     sendChat: PropTypes.func.isRequired,
     updateGeolocationAddress: PropTypes.func.isRequired,
@@ -141,6 +161,7 @@ Users.propTypes = {
       }),
     }).isRequired,
   }).isRequired,
+  weather: PropTypes.object.isRequired,
 };
 
 export default Users;

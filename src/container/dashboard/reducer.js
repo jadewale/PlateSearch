@@ -6,7 +6,7 @@ import {
   REMOVE_CHAT, SEARCH_USERS,
   SEND_MESSAGE, SET_NOTIFICATION,
   UPDATE_FIELDS,
-  UPDATE_FILE, UPDATE_STATUS_FIELD,
+  UPDATE_FILE, UPDATE_STATUS_FIELD, UPDATE_USER_MAP,
 } from '../../constants';
 
 export function makeImmutable(val) {
@@ -77,14 +77,16 @@ export function data(state = Map(makeImmutable(initialLicense)), action) {
   }
 }
 
-export function users(state = Map(makeImmutable({})), action) {
+export function users(state = Map(makeImmutable({ allUsers: {} })), action) {
   switch (action.type) {
     case FETCH_USERS_SUCCESS:
-      return state.setIn(['allUsers'], action.data);
+      return state.setIn(['allUsers'], makeImmutable(action.data));
     case SEARCH_USERS:
       return state.setIn(['search'], action.data);
     case ADD_USER:
       return state.setIn(['display'], action.data);
+    case UPDATE_USER_MAP:
+      return state.setIn(['allUsers', action.id, 'map'], makeImmutable(action.status));
     default:
       return state;
   }

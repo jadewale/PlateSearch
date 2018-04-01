@@ -83,7 +83,7 @@ function* fetchUser(action) {
 function* getWeatherData() {
   try {
     const weather = yield call(weatherAPI);
-    yield put(getWeatherSuccess(weather.data));
+    yield put(getWeatherSuccess(weather));
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }

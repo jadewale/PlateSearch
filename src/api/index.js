@@ -1,5 +1,6 @@
 import firebase from 'firebase';
 import axios from 'axios';
+import request from 'superagent';
 import AuthService from '../services/AuthService';
 import { FACEBOOK } from '../constants';
 import { secretKey } from '../secret';
@@ -57,8 +58,12 @@ export function authenticator(providerType) {
 }
 
 export function getWeather() {
-  const url = 'http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=f7a1ecd069a1053b3f7e0c272f1b2519';
-  return axios.get(url).then((response) => (response));
+  const url = 'http://api.openweathermap.org/data/2.5/weather';
+  return request
+    .get(url)
+    .query({ q: 'London,uk' })
+    .query({ APPID: 'f7a1ecd069a1053b3f7e0c272f1b2519' })
+    .then((res) => res.body);
 }
 
 export function saveLicense(data, files, id) {

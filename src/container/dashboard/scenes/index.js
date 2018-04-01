@@ -13,7 +13,7 @@ import {
   sendNotification,
   submitForm,
   submitMessage, toggleVisibiliy,
-  updateFields, updateOffence, updateStatus, updateStatusField,
+  updateFields, updateOffence, updateStatus, updateStatusField, updateUserMap,
 } from '../actions';
 import { makeSelector } from '../selector';
 import Admin from '../../admin/scenes/dashboard/index';
@@ -140,6 +140,10 @@ class Dashboard extends Component {
     (valid) ? this.props.submitForm(data, email) : this.handleFormError();
   };
 
+  onToggleDisplay = (id, map) => {
+    this.props.updateUserMap(id, map);
+  };
+
   onChat = (evt) => {
     const { value } = evt.target;
     this.props.addChatMessage(value);
@@ -242,7 +246,6 @@ class Dashboard extends Component {
   };
 
   render() {
-
     if (!AuthService.isAuthenticated) {
       return <Redirect to="login" />;
     }
@@ -288,6 +291,7 @@ class Dashboard extends Component {
           onOpenNotification: this.onOpenNotification,
           onCloseNotification: this.onCloseNotification,
           onToggleDashboard: this.onToggleDashboard,
+          onToggleInfoDisplay: this.onToggleDisplay,
           updateGeolocationAddress: this.props.updateGeolocationAddress,
         }}
         variables={{
@@ -297,6 +301,7 @@ class Dashboard extends Component {
           chatData: this.props.chat.chatData,
           users: this.props.users,
           notification: this.props.notification,
+          weather: this.props.weather[0].weather && this.props.weather[0].weather[0],
         }}
       />
     );
@@ -327,6 +332,7 @@ function mapDispatchToProps(dispatch) {
     updateOffence: (keyPath, value) => dispatch(updateOffence(keyPath, value)),
     updateStatusField: (value) => dispatch(updateStatusField(value)),
     updateStatus: (id, status) => dispatch(updateStatus(id, status)),
+    updateUserMap: (id, status) => dispatch(updateUserMap(id, status)),
   };
 }
 
@@ -377,6 +383,7 @@ Dashboard.propTypes = {
   updateGeolocationAddress: PropTypes.func.isRequired,
   updateStatus: PropTypes.func.isRequired,
   updateStatusField: PropTypes.func.isRequired,
+  updateUserMap: PropTypes.func.isRequired,
   data: PropTypes.shape({
     data: PropTypes.object,
   }).isRequired,
