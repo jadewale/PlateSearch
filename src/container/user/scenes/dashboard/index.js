@@ -17,6 +17,9 @@ const Users = (props) => {
     displayName, address, longitude, latitude, offence, verified: showSearch, file, email, photoURL, status,
   } = props.variables.userProfile;
   const { length } = props.variables.chatData.chatOrder;
+  const {
+    addSteps, addTooltip, next, onClickSwitch,
+  } = props.func;
 
   if (!longitude || !latitude) {
     // latitude = this.props.weather[0].coord.latitude;
@@ -38,7 +41,7 @@ const Users = (props) => {
   getGeo(latitude, longitude);
 
   return (
-    <div className={`skin-blue sidebar-mini wrapper sidebar-${props.variables.collapse}`}>
+    <div>
       <Header toggle={props.func.onToggleDashboard} prompt={props.func.onLogout} />
       <Sidebar
         photoUrl={photoURL}
@@ -47,7 +50,7 @@ const Users = (props) => {
         status={status}
         weather={props.variables.weather}
       />
-      <div className="content-wrapper">
+      <div  className="content-wrapper">
         <section className="content-header">
           <h1>
             Welcome
@@ -62,6 +65,10 @@ const Users = (props) => {
         { file ?
           <DashboardSection
             address={address}
+            addSteps={addSteps}
+            next={next}
+            addTooltip={addTooltip}
+            verified={showSearch}
             users={props.variables.users.allUsers}
             openChat={props.func.onOpenChat}
             coords={{ latitude, longitude }}
@@ -72,10 +79,14 @@ const Users = (props) => {
           />
           :
           <LicenseSection
+            addSteps={addSteps}
+            next={next}
+            addTooltip={addTooltip}
             verified={showSearch}
             onChangeFields={props.func.onChangeFields}
             onFile={props.func.onFileChange}
             onSubmit={props.func.onSubmit}
+            onClickSwitch={onClickSwitch}
             email={email}
             name={displayName}
             error={props.variables.error}
@@ -131,8 +142,10 @@ const Users = (props) => {
 
 Users.propTypes = {
   func: PropTypes.shape({
+    addSteps: PropTypes.func.isRequired,
     updateStatus: PropTypes.func.isRequired,
     changeStatusField: PropTypes.func.isRequired,
+    next: PropTypes.func.isRequired,
     searchUser: PropTypes.func.isRequired,
     onChangeSearch: PropTypes.func.isRequired,
     onFileChange: PropTypes.func.isRequired,

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import AuthService from '../../../services/AuthService';
+import Joyride from 'react-joyride';
 
 import {
   addChat,
@@ -25,6 +26,13 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       collapse: '',
+      joyrideOverlay: true,
+      joyrideType: 'continuous',
+      isReady: false,
+      isRunning: false,
+      stepIndex: 0,
+      steps: [],
+      selector: '',
     };
   }
 
@@ -39,6 +47,12 @@ class Dashboard extends Component {
       this.props.registerPushNotification(this.getEmail().email);
       this.props.getLocation(email);
     }
+    setTimeout(() => {
+      this.setState({
+        isReady: true,
+        isRunning: true,
+      });
+    }, 5000);
   }
 
   onToggleDashboard = () => {
@@ -47,6 +61,71 @@ class Dashboard extends Component {
     } else {
       this.setState({ collapse: '' });
     }
+  };
+
+  addTooltip = (data) => {
+    this.joyride.addTooltip(data);
+  };
+
+  next = () => {
+    this.joyride.next();
+  };
+
+  addSteps = (steps) => {
+    let newSteps = steps;
+
+    if (!Array.isArray(newSteps)) {
+      newSteps = [newSteps];
+    }
+
+    if (!newSteps.length) {
+      return;
+    }
+
+
+    // Force setState to be synchronous to keep step order.
+    this.setState((currentState) => {
+      currentState.steps = currentState.steps.concat(newSteps);
+      return currentState;
+    });
+  }
+
+
+  callback = (data) => {
+    console.log('%ccallback', 'color: #47AAAC; font-weight: bold; font-size: 13px;'); // eslint-disable-line no-console
+    console.log(data); // eslint-disable-line no-console
+
+    this.setState({
+      selector: data.type === 'tooltip:before' ? data.step.selector : '',
+    });
+  }
+
+  onClickSwitch = (e) => {
+    e.preventDefault();
+    const el = e.currentTarget;
+    const state = {};
+
+    if (el.dataset.key === 'joyrideType') {
+      this.joyride.reset();
+
+      this.setState({
+        isRunning: false,
+      });
+
+      setTimeout(() => {
+        this.setState({
+          isRunning: true,
+        });
+      }, 300);
+
+      state.joyrideType = e.currentTarget.dataset.type;
+    }
+
+    if (el.dataset.key === 'joyrideOverlay') {
+      state.joyrideOverlay = el.dataset.type === 'active';
+    }
+
+    this.setState(state);
   };
 
   onChangeFields = (evt) => {
@@ -250,6 +329,16 @@ class Dashboard extends Component {
       return <Redirect to="login" />;
     }
 
+    const {
+      isReady,
+      isRunning,
+      joyrideOverlay,
+      joyrideType,
+      selector,
+      stepIndex,
+      steps,
+    } = this.state;
+
     const adminEmail = this.props.admin.adminProfile.email;
     const { email } = this.getEmail();
     if (adminEmail && !email) {
@@ -274,36 +363,67 @@ class Dashboard extends Component {
     }
 
     return (
-      <Users
-        func={{
-          updateStatus: this.updateStatus,
-          changeStatusField: this.changeStatusField,
-          onOpenChat: this.onOpenChat,
-          searchUser: this.searchUser,
-          onChangeSearch: this.onChangeSearch,
-          onChangeFields: this.onChangeFields,
-          onFileChange: this.onFileChange,
-          onSubmit: this.onSubmit,
-          onChat: this.onChat,
-          sendChat: this.sendChat,
-          onLogout: this.onLogout,
-          onRemove: this.onRemove,
-          onOpenNotification: this.onOpenNotification,
-          onCloseNotification: this.onCloseNotification,
-          onToggleDashboard: this.onToggleDashboard,
-          onToggleInfoDisplay: this.onToggleDisplay,
-          updateGeolocationAddress: this.props.updateGeolocationAddress,
-        }}
-        variables={{
-          error: this.props.error,
-          collapse: this.state.collapse,
-          userProfile: this.props.user.userProfile,
-          chatData: this.props.chat.chatData,
-          users: this.props.users,
-          notification: this.props.notification,
-          weather: this.props.weather[0].weather && this.props.weather[0].weather[0],
-        }}
-      />
+      <div>
+        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
+          <Joyride
+            ref={(c) => (this.joyride = c)}
+            callback={this.callback}
+            debug={false}
+            disableOverlay={selector === '.card-tickets'}
+            locale={{
+              back: (<span>Back</span>),
+              close: (<span>Close</span>),
+              last: (<span>Last</span>),
+              next: (<span>Next</span>),
+              skip: (<span>Skip</span>),
+            }}
+            run={isRunning}
+            showOverlay={joyrideOverlay}
+            showSkipButton
+            showStepsProgress
+            stepIndex={stepIndex}
+            steps={steps}
+            type={joyrideType}
+          />
+          <Users
+            func={{
+              addSteps: this.addSteps,
+              addTooltip: this.addTooltip,
+              updateStatus: this.updateStatus,
+              changeStatusField: this.changeStatusField,
+              onOpenChat: this.onOpenChat,
+              searchUser: this.searchUser,
+              onChangeSearch: this.onChangeSearch,
+              onChangeFields: this.onChangeFields,
+              onFileChange: this.onFileChange,
+              onSubmit: this.onSubmit,
+              onChat: this.onChat,
+              onClickSwitch: this.onClickSwitch,
+              next: this.next,
+              sendChat: this.sendChat,
+              onLogout: this.onLogout,
+              onRemove: this.onRemove,
+              onOpenNotification: this.onOpenNotification,
+              onCloseNotification: this.onCloseNotification,
+              onToggleDashboard: this.onToggleDashboard,
+              onToggleInfoDisplay: this.onToggleDisplay,
+              updateGeolocationAddress: this.props.updateGeolocationAddress,
+            }}
+            variables={{
+              error: this.props.error,
+              collapse: this.state.collapse,
+              userProfile: this.props.user.userProfile,
+              chatData: this.props.chat.chatData,
+              users: this.props.users,
+              notification: this.props.notification,
+              weather: this.props.weather[0].weather && this.props.weather[0].weather[0],
+              joyrideType,
+              joyrideOverlay,
+              selector,
+            }}
+          />
+        </div>
+      </div>
     );
   }
 }

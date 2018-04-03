@@ -41,13 +41,13 @@ const SideBar = ({
         <div className="input-group">
           <input type="text" name="q" onChange={onChange} className="form-control" placeholder="Update Status..." />
           <span className="input-group-btn">
-            <button type="button" name="search" onClick={onSubmit} id="search-btn" className="btn btn-flat"><i className="fa fa-arrow-right"></i>
+            <button type="button" name="search" onClick={onSubmit} id="search-btn" className="btn btn-flat fourth-step"><i className="fa fa-arrow-right"></i>
             </button>
           </span>
         </div>
       </form>
       <ul id="widget" className="sidebar-menu" data-widget="tree">
-        <li className="header">
+        <li className="header third-step">
           <input onChange={onChange} type="checkbox" />
           <span className="col-sm-offset-1">Visible</span>
         </li>

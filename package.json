@@ -16,6 +16,7 @@
     "react-geocode": "^0.0.7",
     "react-geolocated": "^2.3.0",
     "react-google-maps": "^9.4.5",
+    "react-joyride": "^1.11.4",
     "react-modal": "^3.1.12",
     "react-open-weather-map": "^2.3.0",
     "react-overlay": "^0.1.7",
