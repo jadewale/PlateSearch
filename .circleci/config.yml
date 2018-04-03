@@ -1,0 +1,70 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: node:8
+
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mongo:3.4.4
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # run tests!
+      - run: yarn test
+  deploy:
+      docker:
+        - image: node:8
+      steps:
+            - checkout
+            - run:
+                name: Deploy Master to Heroku
+                command: |  # this command is framework-dependent and may vary
+                  heroku git:remote -a react-app-practice
+                  heroku container:push web
+                  sleep 5  # sleep for 5 seconds to wait for dynos
+                  heroku restart
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          context: variables
+          filters:
+            tags:
+              only: /^\d{4}\.\d+$/
+      - deploy:
+          requires:
+            - build
+          context: variables
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^\d{4}\.\d+$/
+

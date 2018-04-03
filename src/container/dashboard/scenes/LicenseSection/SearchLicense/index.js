@@ -36,7 +36,7 @@ const SearchLicense = () => (
         <div className="input-group">
           <input type="text" onChange={() => {}} style={{ backgroundColor: 'white' }} name="q" className="form-control" placeholder="Search..." />
           <span className="input-group-btn">
-            <button type="button" name="search" onClick={() => {}} id="search-btn" className="btn btn-flat"><i className="fa fa-search"></i>
+            <button type="button" name="search" onClick={() => {}} id="search-btn" className="btn btn-flat card-tasks"><i className="fa fa-search"></i>
             </button>
           </span>
         </div>

@@ -1,8 +1,11 @@
 import firebase from 'firebase';
 import axios from 'axios';
+import request from 'superagent';
+import AuthService from '../services/AuthService';
 import { FACEBOOK } from '../constants';
 import { secretKey } from '../secret';
 require('firebase/firestore');
+
 
 const config = secretKey();
 firebase.initializeApp(config);
@@ -28,6 +31,7 @@ export function authenticator(providerType) {
         .collection('user')
         .where('email', '==', email);
       query.get().then((querySnapshot) => {
+        AuthService.isAuthenticated = true;
         const size = querySnapshot.size;
         if (size === 0) {
           const data = {
@@ -54,8 +58,12 @@ export function authenticator(providerType) {
 }
 
 export function getWeather() {
-  const url = 'http://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=f7a1ecd069a1053b3f7e0c272f1b2519';
-  return axios.get(url).then((response) => (response));
+  const url = 'http://api.openweathermap.org/data/2.5/weather';
+  return request
+    .get(url)
+    .query({ q: 'London,uk' })
+    .query({ APPID: 'f7a1ecd069a1053b3f7e0c272f1b2519' })
+    .then((res) => res.body);
 }
 
 export function saveLicense(data, files, id) {
@@ -82,7 +90,6 @@ function uploadFile(file, cloudName = 'dd58mfinr', unsignedUploadPreset = 'sw64g
         .set({ ...data, file: fileUrl }, { merge: true })
         .then((docRef) => {
           resolve(docRef);
-          console.log('Document written with ID: ', docRef.id);
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
@@ -108,16 +115,33 @@ export function fetchAllusers() {
   });
 }
 
+export function fetchUser(email) {
+  return firebase.firestore()
+    .collection('user')
+    .where('email', '==', email).get().then((querySnapshot) => querySnapshot.docs[0].data());
+}
+
 export function updateUserStatus(id, status) {
   return firebase.firestore()
     .collection('user')
     .doc(id).set({ status }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
+export function updateOffence(id, offence) {
+  return firebase.firestore()
+    .collection('user')
+    .doc(id).set({ offence }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+
 export function updateVisibilityStatus(id, visible) {
   return firebase.firestore()
     .collection('user')
     .doc(id).set({ visible }, { merge: true }).then((res) => (res)).catch((err) => (err));
+}
+
+export function updateGeoLocationAddress(id, address) {
+  return firebase.firestore()
+    .collection('user').doc(id).set({ address }, { merge: true }).then((res) => (res)).catch((err) => (err));
 }
 
 export function updateGeoLocation(coords, id) {

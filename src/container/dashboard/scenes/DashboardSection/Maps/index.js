@@ -1,16 +1,32 @@
 import React from 'react';
-import { GoogleMap, Marker, withGoogleMap, TrafficLayer } from 'react-google-maps';
+import { GoogleMap, Marker, withGoogleMap, TrafficLayer, withScriptjs, InfoWindow } from 'react-google-maps';
 import PropTypes from 'prop-types';
 
-const DashboardMap = ({ userlocation, allUsers, isMarkerShown }) => (
+const DashboardMap = ({
+  userlocation, allUsers, isMarkerShown, onToggleInfoDisplay,
+}) => (
   <GoogleMap
-    defaultZoom={5}
+    defaultZoom={10}
     defaultCenter={{ lat: userlocation.lat, lng: userlocation.lng }}
-    googleMapURL="https://maps.googleapis.com/maps/api/js"
-    loadingElement={<div>Loading</div>}
   >
     {isMarkerShown && Object.keys(allUsers).map((data) => allUsers[data].latitude && allUsers[data].visible &&
-      <Marker key={data} position={{ lat: allUsers[data].latitude || 0, lng: allUsers[data].longitude || 0 }} />)}
+      <Marker
+        icon={require('../../../../../asset/img/car4.png')}
+        key={data}
+        position={{ lat: allUsers[data].latitude || 0, lng: allUsers[data].longitude || 0 }}
+        onClick={() => onToggleInfoDisplay(data, true)}
+      >
+        {allUsers[data].map && <InfoWindow onCloseClick={() => onToggleInfoDisplay(data, false)}>
+          <div>
+            <p>{allUsers[data].displayName}</p>
+            <h6>{allUsers[data].address}</h6>
+            <h6>{allUsers[data].license}</h6>
+          </div>
+        </InfoWindow>
+        }
+      </Marker>
+    )
+    }
     <TrafficLayer autoUpdate />
   </GoogleMap>
 );
@@ -21,7 +37,8 @@ DashboardMap.propTypes = {
     lng: PropTypes.number.isRequired,
   }).isRequired,
   allUsers: PropTypes.object.isRequired,
+  onToggleInfoDisplay: PropTypes.func.isRequired,
 };
 
-export default withGoogleMap(DashboardMap);
+export default withScriptjs(withGoogleMap(DashboardMap));
 

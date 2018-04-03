@@ -1,11 +1,14 @@
 import { call, put, take, takeLatest } from 'redux-saga/effects';
 import { delay } from 'redux-saga';
 import { push } from 'react-router-redux';
-import { authenticator as authApi } from '../../api/index';
+import { authenticator as authApi, updateGeoLocationAddress as updateAddressAPI } from '../../api/index';
 import { getToken as getTokenAPI } from '../../api/pushNotifications';
-import { GOOGLE_SIGN, FACEBOOK_SIGN, FACEBOOK, GOOGLE, PUSH_NOTIFICATIONS } from '../../constants';
+import {
+  GOOGLE_SIGN, FACEBOOK_SIGN, FACEBOOK, GOOGLE, PUSH_NOTIFICATIONS,
+  UPDATE_USER_LOCATION
+} from '../../constants';
 import { googleSuccess, facebookSuccess } from './actions';
-import { dismissNotification, setNotification } from '../dashboard/actions';
+import { dismissNotification, fetchUser, setNotification } from '../dashboard/actions';
 
 function* googleSign() {
   try {
@@ -56,9 +59,19 @@ function* registerPushNotification(action) {
   }
 }
 
+function* updateUserGeoLocation(action) {
+  try {
+    yield call(updateAddressAPI, action.id, action.address);
+    yield put(fetchUser(action.id));
+  } catch (e) {
+    console.log(e); // eslint-disable-line no-console
+  }
+}
+
 
 export default [].concat(
   takeLatest(GOOGLE_SIGN, googleSign), // eslint-disable-line
   takeLatest(FACEBOOK_SIGN, facebookSign), // eslint-disable-line
-  takeLatest(PUSH_NOTIFICATIONS, registerPushNotification) // eslint-disable-line
+  takeLatest(PUSH_NOTIFICATIONS, registerPushNotification), // eslint-disable-line
+  takeLatest(UPDATE_USER_LOCATION, updateUserGeoLocation), // eslint-disable-line
 );

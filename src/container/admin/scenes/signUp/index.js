@@ -3,17 +3,19 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
-import { updateAdminSignUp } from '../../actions';
-import { makeSelector } from '../../selector';
-
+import { updateAdminSignUp } from '../../../user/actions';
+import { makeSelector } from '../../../user/selector';
+import AuthService from '../../../../services/AuthService';
 class SignUp extends Component {
   signUpForm = (evt) => {
     evt.preventDefault();
     const { email, password } = this.props.admin.adminProfile;
 
-    if (email === 'oliver@admin.com' && password === 'password') {
+
+    if (email === 'teste@yahoo.com' && password === 'test') {
       this.props.updateSignUp('error', '');
       this.props.signUpSuccess();
+      AuthService.isAuthenticated = true;
       return;
     }
     this.props.updateSignUp('error', 'Invalid Email or Password');

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Rating from '../../../../../component/rating';
 
 const FindUsers = ({
   display, searchUsers, onChange, openChat,
@@ -11,7 +12,7 @@ const FindUsers = ({
         <div className="input-group">
           <input required type="text" style={{ backgroundColor: 'white' }} onChange={onChange} name="q" className="form-control" placeholder="Search for users..." />
           <span className="input-group-btn">
-            <button type="button" name="search" id="search-btn" className="btn btn-flat"><i className="fa fa-search"></i>
+            <button type="button" name="search" id="search-btn" className="btn btn-flat card-action"><i className="fa fa-search"></i>
             </button>
           </span>
         </div>
@@ -34,6 +35,8 @@ const FindUsers = ({
             <div className="box-footer no-padding">
               <ul className="nav nav-stacked">
                 <li><a href="#">Model <span className="pull-right ">{display.model}</span></a></li>
+                <li><a href="#"> <span className="">{display.visible ? display.address : 'Private Location'}</span></a></li>
+                <li><a><Rating rating={['1', '2', '3', '4', '5']} /> </a></li>
                 <li><a href="#">License <span className="pull-right ">{ display.license }</span></a></li>
                 <li onClick={() => { openChat(display.email); }}><a href="#">Chat <span className="pull-right "></span></a></li>
               </ul>

@@ -2,9 +2,11 @@ import { call, put, fork, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   approveUser as approveUserAPI,
   fetchAllusers as usersAPI,
+  fetchUser as userAPI,
   getWeather as weatherAPI,
   rejectUser as rejectUserAPI,
   saveLicense as saveLicenseAPI,
+  updateOffence as updateOffenceAPI,
   updateUserStatus as updateStatusAPI,
   updateVisibilityStatus as statusAPI,
   updateGeoLocation as updateLocationAPI,
@@ -17,13 +19,16 @@ import {
 } from '../../api/message';
 import {
   APPROVE_USER,
-  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, REJECT_USERS, SEND_MESSAGE,
-  SEND_NOTIFICATION, UPDATE_STATUS, UPDATE_VISIBILITY,
+  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, REJECT_USERS,
+  SEND_MESSAGE,
+  SEND_NOTIFICATION, UPDATE_OFFENCE, UPDATE_STATUS, UPDATE_VISIBILITY,
 } from '../../constants';
 import {
   getWeatherSuccess, fetchUsersSuccess, addChat,
-  fetchChatMessage, fetchUsers as fetchAllUsers,
+  fetchChatMessage, fetchUsers as fetchAllUsers, fetchUser as fetchUserAction,
 } from './actions';
+import { googleSuccess } from '../user/actions';
+
 
 function* approveUser(action) {
   try {
@@ -66,10 +71,19 @@ function* fetchUsers() {
   }
 }
 
+function* fetchUser(action) {
+  try {
+    const user = yield call(userAPI, action.email);
+    yield put(googleSuccess(user));
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 function* getWeatherData() {
   try {
     const weather = yield call(weatherAPI);
-    yield put(getWeatherSuccess(weather.data));
+    yield put(getWeatherSuccess(weather));
   } catch (e) {
     console.log(e); // eslint-disable-line no-console
   }
@@ -80,6 +94,8 @@ function* saveLicenseData(action) {
     const file = action.formData.upload;
     delete action.formData.upload;
     const response = yield call(saveLicenseAPI, action.formData, file[0], action.id);
+    yield put(fetchAllUsers());
+    yield put(fetchUserAction(action.id));
     // yield put();
   } catch (e) {
     console.log(e);
@@ -109,6 +125,7 @@ function* sendPushNotification(action) {
 function* updateStatus(action) {
   try {
     yield call(updateStatusAPI, action.id, action.status);
+    yield put(fetchAllUsers());
   } catch (e) {
     console.log(e);
   }
@@ -117,6 +134,7 @@ function* updateStatus(action) {
 function* updateVisibility(action) {
   try {
     yield call(statusAPI, action.id, action.visible);
+    yield put(fetchAllUsers());
   } catch (e) {
     console.log(e);
   }
@@ -133,9 +151,10 @@ function* getMapData(action) {
   }
 }
 
-function* receiveChat() {
+function* updateOffence(action) {
   try {
-
+    yield call(updateOffenceAPI, action.id, action.offence);
+    yield put(fetchAllUsers());
   } catch (e) {
     console.log(e);
   }
@@ -153,4 +172,6 @@ export default [].concat(
   takeLatest(FETCH_GOOGLE_MAPS, getMapData), // eslint-disable-line
   takeLatest(APPROVE_USER, approveUser), // eslint-disable-line
   takeLatest(REJECT_USERS, rejectUser), // eslint-disable-line
+  takeLatest(UPDATE_OFFENCE, updateOffence), // eslint-disable-line
+  takeLatest(FETCH_USER, fetchUser), // eslint-disable-line
 );
