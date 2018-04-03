@@ -8,59 +8,7 @@ const UnverifiedUser = () => (
 );
 
 class LicenseSection extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
-    /* this.props.addTooltip({
-      title: 'A fixed tooltip',
-      text: 'You can have fixed tooltips too!',
-      selector: '.jolaade',
-      position: 'bottom',
-      event: 'click',
-      isFixed: true,
-      style: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        color: '#fff',
-        mainColor: '#ff0044',
-        zIndex: 100000,
-        width: '29rem',
-        header: {
-          color: '#ff0044',
-          textTransform: 'uppercase',
-          textAlign: 'center',
-        },
-      },
-    });
-    {
-        title: 'Advance customization',
-        text: 'You can set individual styling options for beacons and tooltips. <br/>To advance click `NEXT` inside the hole.',
-        selector: '.card-tickets',
-        position: 'bottom',
-        allowClicksThruHole: true,
-        style: {
-          backgroundColor: 'black',
-          zIndex: 10000,
-          mainColor: '#000',
-          header: {
-            color: '#f04',
-            fontSize: '3rem',
-            textAlign: 'center',
-          },
-          footer: {
-            display: 'none',
-          },
-          beacon: {
-            inner: '#000',
-            outer: '#000',
-          },
-        },
-      },
-
-    */
-
-
     const steps = [
       {
         title: 'Form Submit',

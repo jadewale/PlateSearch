@@ -50,7 +50,7 @@ const Users = (props) => {
         status={status}
         weather={props.variables.weather}
       />
-      <div className="content-wrapper">
+      <div  className="content-wrapper">
         <section className="content-header">
           <h1>
             Welcome
@@ -65,6 +65,10 @@ const Users = (props) => {
         { file ?
           <DashboardSection
             address={address}
+            addSteps={addSteps}
+            next={next}
+            addTooltip={addTooltip}
+            verified={showSearch}
             users={props.variables.users.allUsers}
             openChat={props.func.onOpenChat}
             coords={{ latitude, longitude }}

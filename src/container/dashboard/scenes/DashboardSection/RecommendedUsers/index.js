@@ -34,7 +34,7 @@ const RecomendedUser = ({
 
   return (
     <div className="box box-danger">
-      <div className="box-header with-border">
+      <div className="box-header with-border third-chat">
         <h3 style={{ fontSize: '8px' }} className="box-title">{ displayMessage }</h3>
 
         <div className="box-tools pull-right">

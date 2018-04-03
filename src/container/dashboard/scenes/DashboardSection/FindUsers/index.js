@@ -12,7 +12,7 @@ const FindUsers = ({
         <div className="input-group">
           <input required type="text" style={{ backgroundColor: 'white' }} onChange={onChange} name="q" className="form-control" placeholder="Search for users..." />
           <span className="input-group-btn">
-            <button type="button" name="search" id="search-btn" className="btn btn-flat"><i className="fa fa-search"></i>
+            <button type="button" name="search" id="search-btn" className="btn btn-flat card-action"><i className="fa fa-search"></i>
             </button>
           </span>
         </div>
