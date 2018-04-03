@@ -5,7 +5,7 @@ import { push } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { updateAdminSignUp } from '../../../user/actions';
 import { makeSelector } from '../../../user/selector';
-
+import AuthService from '../../../../services/AuthService';
 class SignUp extends Component {
   signUpForm = (evt) => {
     evt.preventDefault();
@@ -14,6 +14,7 @@ class SignUp extends Component {
     if (email === 'jolaade@yahoo.com' && password === 'testerss') {
       this.props.updateSignUp('error', '');
       this.props.signUpSuccess();
+      AuthService.isAuthenticated = true;
       return;
     }
     this.props.updateSignUp('error', 'Invalid Email or Password');

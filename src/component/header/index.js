@@ -17,7 +17,7 @@ const Header = ({ toggle, prompt }) => (
 
       <div className="navbar-custom-menu">
         <ul className="nav navbar-nav">
-          <li className="dropdown messages-menu">
+          <li className="dropdown messages-menu fifth-step">
             <a href="#" onClick={prompt} className="dropdown-toggle" data-toggle="tooltip" data-placement="left" title="Logout" aria-expanded="false">
               <i className="fa fa-sign-out"></i>
             </a>

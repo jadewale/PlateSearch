@@ -60,6 +60,7 @@ ReadOnlyFormGroup.propTypes = {
   display: PropTypes.string.isRequired,
 };
 
+
 const FormLicense = ({
   email, error, name, onChangeFields, onFile, onSubmit,
 }) => (
