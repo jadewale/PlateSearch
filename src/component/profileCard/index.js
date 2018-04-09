@@ -55,7 +55,7 @@ const ProfileCard = ({
         <div className="row">
           <div className="col-sm-4 border-right">
             <div className="description-block">
-              <a onClick={(evt) => approve(evt, data.email)} href="/" className="link-black text-sm">
+              <a onClick={(evt) => approve(evt, data)} href="/" className="link-black text-sm">
                 <i className="fa fa-thumbs-o-up margin-r-5"></i>
                 Approve
               </a>
@@ -67,11 +67,12 @@ const ProfileCard = ({
               <span className="description-text">
                 { (data.verified) ? <OffencesCard id={data.email} onChangeOffence={onChangeOffence} /> : 'Not Verified' }
               </span>
+              <a target="_blank" href={data.file}> <span>View License</span></a>
             </div>
           </div>
           <div className="col-sm-4">
             <div className="description-block">
-              <a onClick={(evt) => reject(evt, data.email)} href="/" className="link-black text-sm">
+              <a onClick={(evt) => reject(evt, data)} href="/" className="link-black text-sm">
                 <i className="fa fa-thumbs-o-down margin-r-5"></i>
                 Reject
               </a>

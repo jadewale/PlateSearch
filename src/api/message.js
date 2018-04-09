@@ -5,7 +5,7 @@ import { eventChannel } from 'redux-saga';
 axios.defaults.headers.common.Authorization = 'Key=AAAAW5tjHio:APA91bGudrZg59-x6X2LQDz0GhYxNeWWwLY_zOL4xme973XWtWjmrxrOVuw4w-eMrohdR5Ak9O0IU4LYqoNkquXVZ4LXkIT5I5qhGI1e1CigfV2eBEHm21VWYo-qyi6wr_RPMkocXQMT';
 axios.defaults.headers.post['content-Type'] = 'application/json';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-const fcm = new FCM('AIzaSyAfDbfvHnivqCMj-Ldxq40GBRO3OC6RX0Q');
+const fcm = new FCM('AIzaSyC7TXERmMlFaacQ4eKed3x0cEDrE2A0E4A');
 
 export function sendMessage(action) {
   return new Promise((resolve) => {

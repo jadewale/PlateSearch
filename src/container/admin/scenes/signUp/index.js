@@ -11,7 +11,8 @@ class SignUp extends Component {
     evt.preventDefault();
     const { email, password } = this.props.admin.adminProfile;
 
-    if (email === 'jolaade@yahoo.com' && password === 'testerss') {
+
+    if (email === 'test@yahoo.com' && password === 'test') {
       this.props.updateSignUp('error', '');
       this.props.signUpSuccess();
       AuthService.isAuthenticated = true;

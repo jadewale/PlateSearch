@@ -8,13 +8,13 @@ import DashboardSection from '../../../dashboard/scenes/DashboardSection';
 import Footer from '../../../../component/footer';
 import Notification from '../../../../component/notification';
 import LicenseSection from '../../../dashboard/scenes/LicenseSection';
-import Rate from '../../../../component/rating';
+import { Rating } from '../../../../component/rating';
 
 Geocode.setApiKey('AIzaSyAlI8N49LxlVUexUywuoR2CtukrbVKNbY4');
 
 const Users = (props) => {
   const {
-    displayName, address, longitude, latitude, offence, verified: showSearch, file, email, photoURL, status,
+    displayName, address, longitude, latitude, offence, verified: showSearch, file, email, photoURL, status, rating,
   } = props.variables.userProfile;
   const { length } = props.variables.chatData.chatOrder;
   const {
@@ -40,6 +40,27 @@ const Users = (props) => {
 
   getGeo(latitude, longitude);
 
+  const calculateUserRating = (ratingArg) => {
+    const averageRating = [];
+    if (!ratingArg) {
+      for (let c = 0; c < 5; c += 1) {
+        averageRating.push({ className: 'fa text-yellow fa-star' });
+      }
+      return averageRating;
+    }
+
+    const total = (Object.values(ratingArg).reduce((accumulator, present) => {
+      accumulator += present;
+      return accumulator;
+    }, 0) / Object.values(ratingArg).length);
+
+    for (let c = 0; c < 5; c += 1) {
+      averageRating.push({ className: `fa fa-star ${(c < total) ? 'text-yellow' : ''} ` });
+    }
+
+    return averageRating;
+  };
+
   return (
     <div>
       <Header toggle={props.func.onToggleDashboard} prompt={props.func.onLogout} />
@@ -50,15 +71,17 @@ const Users = (props) => {
         status={status}
         weather={props.variables.weather}
       />
-      <div  className="content-wrapper">
+      <div className="content-wrapper">
         <section className="content-header">
           <h1>
             Welcome
           </h1>
           { offence ? <span className="text-danger">Your Offence is {offence}</span> : 'Please Upload your License for Approval'}
           <div>
-            <Rate
-              rating={[{ color: 'yellow' }, { color: 'yellow' }, { color: 'yellow' }, { color: 'yellow' }, { color: 'yellow' }]}
+            <Rating
+              owner
+              rating={calculateUserRating(rating)}
+              rateUser={() => {}}
             />
           </div>
         </section>
@@ -76,6 +99,7 @@ const Users = (props) => {
             onChange={props.func.onChangeSearch}
             display={props.variables.users.display && props.variables.users.display[0]}
             onToggleInfoDisplay={props.func.onToggleInfoDisplay}
+            rateUser={props.func.onRateUser}
           />
           :
           <LicenseSection
@@ -158,6 +182,7 @@ Users.propTypes = {
     onOpenNotification: PropTypes.func.isRequired,
     onCloseNotification: PropTypes.func.isRequired,
     onToggleInfoDisplay: PropTypes.func.isRequired,
+    onRateUser: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     sendChat: PropTypes.func.isRequired,
     updateGeolocationAddress: PropTypes.func.isRequired,

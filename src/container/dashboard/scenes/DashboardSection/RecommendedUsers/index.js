@@ -14,7 +14,7 @@ const RecomendedUser = ({
     } = data;
     if (latitude && longitude) {
       const distance = geolib.getDistance({ latitude, longitude }, usersLocation);
-      if (distance <= 70858) {
+      if (admin || distance <= 70858) {
         return (
           <li key={email} onClick={() => { openChat(email); }}>
             <img

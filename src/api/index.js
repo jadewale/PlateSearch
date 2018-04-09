@@ -167,3 +167,13 @@ export function rejectUser(id) {
     .doc(id).delete().then((res) => (res)).catch((err) => (err));
 }
 
+export function rating(obj) {
+  const { id, userId, rate } = obj;
+  return firebase
+    .firestore()
+    .collection('user')
+    .doc(id)
+    .set({ rating: { [userId]: rate } }, { merge: true })
+    .then((res) => (res)).catch((err) => (err));
+}
+
