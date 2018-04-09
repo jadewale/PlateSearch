@@ -10,6 +10,7 @@ import {
   updateUserStatus as updateStatusAPI,
   updateVisibilityStatus as statusAPI,
   updateGeoLocation as updateLocationAPI,
+  rating as ratingAPI,
 } from '../../api';
 import { getLocation as geolocationAPI } from '../../api/map';
 import {
@@ -19,15 +20,17 @@ import {
 } from '../../api/message';
 import {
   APPROVE_USER,
-  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, REJECT_USERS,
+  CREATE_LICENSE, FETCH_GOOGLE_MAPS, FETCH_USER, FETCH_USER_MESSAGE, FETCH_USERS, GET_WEATHER, RATING, REJECT_USERS,
   SEND_MESSAGE,
-  SEND_NOTIFICATION, UPDATE_OFFENCE, UPDATE_STATUS, UPDATE_VISIBILITY,
+  SEND_NOTIFICATION, SEND_SMS, UPDATE_OFFENCE, UPDATE_STATUS, UPDATE_VISIBILITY,
 } from '../../constants';
 import {
   getWeatherSuccess, fetchUsersSuccess, addChat,
   fetchChatMessage, fetchUsers as fetchAllUsers, fetchUser as fetchUserAction,
 } from './actions';
 import { googleSuccess } from '../user/actions';
+import { sendSms } from '../../api/sms';
+
 
 
 function* approveUser(action) {
@@ -160,6 +163,23 @@ function* updateOffence(action) {
   }
 }
 
+function* sms(action) {
+  try {
+    const status = yield call(sendSms(action.obj));
+    debugger;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* updateRating(action) {
+  try {
+    const ratings = yield call(ratingAPI, action.obj);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export default [].concat(
   takeLatest(GET_WEATHER, getWeatherData), // eslint-disable-line
   takeLatest(CREATE_LICENSE, saveLicenseData), // eslint-disable-line
@@ -174,4 +194,6 @@ export default [].concat(
   takeLatest(REJECT_USERS, rejectUser), // eslint-disable-line
   takeLatest(UPDATE_OFFENCE, updateOffence), // eslint-disable-line
   takeLatest(FETCH_USER, fetchUser), // eslint-disable-line
+  takeLatest(SEND_SMS, sms), // eslint-disable-line
+  takeLatest(RATING, updateRating), // eslint-disable-line
 );

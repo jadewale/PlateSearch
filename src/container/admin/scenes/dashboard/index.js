@@ -30,6 +30,7 @@ const Admin = (props) => (
           latitude: props.variables.weather.lat,
           longitude: props.variables.weather.lon,
         }}
+        onToggleInfoDisplay={props.func.onToggleInfoDisplay}
       />
       <div>
         {props.variables.chatOrder.map((obj, index) => (<ProfileCard
@@ -54,6 +55,7 @@ Admin.propTypes = {
     onOpenChat: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired,
     onToggleDashboard: PropTypes.func.isRequired,
+    onToggleInfoDisplay: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
     onChangeOffence: PropTypes.func.isRequired,
   }).isRequired,

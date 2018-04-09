@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Rating from '../../../../../component/rating';
+import { Rating } from '../../../../../component/rating';
 
 const FindUsers = ({
-  display, searchUsers, onChange, openChat,
+  display, searchUsers, onChange, openChat, rateUser,
 }) => (
   <div className="box box-danger">
     <div className="box-header with-border">
@@ -36,7 +36,18 @@ const FindUsers = ({
               <ul className="nav nav-stacked">
                 <li><a href="#">Model <span className="pull-right ">{display.model}</span></a></li>
                 <li><a href="#"> <span className="">{display.visible ? display.address : 'Private Location'}</span></a></li>
-                <li><a><Rating rating={['1', '2', '3', '4', '5']} /> </a></li>
+                <li><a>
+                  <Rating
+                    rating={[{ className: 'fa text-yellow fa-star' },
+                      { className: 'fa text-yellow fa-star' },
+                      { className: 'fa text-yellow fa-star' },
+                      { className: 'fa text-yellow fa-star' },
+                      { className: 'fa text-yellow fa-star' }]}
+                    rateUser={rateUser}
+                    id={display.email}
+                  />
+                </a>
+                </li>
                 <li><a href="#">License <span className="pull-right ">{ display.license }</span></a></li>
                 <li onClick={() => { openChat(display.email); }}><a href="#">Chat <span className="pull-right "></span></a></li>
               </ul>
@@ -55,6 +66,7 @@ FindUsers.propTypes = {
   display: PropTypes.object.isRequired,
   openChat: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+  rateUser: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
 };
 export default FindUsers;

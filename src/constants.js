@@ -55,3 +55,5 @@ export const UPDATE_OFFENCE = 'UPDATE_OFFENCE';
 export const FETCH_USER = 'FETCH_USER';
 export const UPDATE_USER_LOCATION = 'UPDATE_USER_LOCATION';
 export const UPDATE_USER_MAP = 'UPDATE_USER_MAP';
+export const SEND_SMS = 'SEND_SMS';
+export const RATING = 'RATING';

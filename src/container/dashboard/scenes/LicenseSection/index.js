@@ -4,7 +4,7 @@ import FormLicense from './FormLicense';
 import SearchLicense from './SearchLicense';
 
 const UnverifiedUser = () => (
-  <span>Please hold on while we verify your account.</span>
+  <span className="card-tasks">Please hold on while we verify your account.</span>
 );
 
 class LicenseSection extends React.Component {

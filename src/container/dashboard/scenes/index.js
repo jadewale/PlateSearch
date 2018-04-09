@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import Joyride from 'react-joyride';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import AuthService from '../../../services/AuthService';
-import Joyride from 'react-joyride';
 
 import {
   addChat,
@@ -13,8 +13,9 @@ import {
   removeChat, searchUsers,
   sendNotification,
   submitForm,
+  sendSms,
   submitMessage, toggleVisibiliy,
-  updateFields, updateOffence, updateStatus, updateStatusField, updateUserMap,
+  updateFields, updateOffence, updateStatus, updateStatusField, updateUserMap, rating,
 } from '../actions';
 import { makeSelector } from '../selector';
 import Admin from '../../admin/scenes/dashboard/index';
@@ -61,10 +62,6 @@ class Dashboard extends Component {
     } else {
       this.setState({ collapse: '' });
     }
-  };
-
-  addTooltip = (data) => {
-    this.joyride.addTooltip(data);
   };
 
   next = () => {
@@ -206,6 +203,11 @@ class Dashboard extends Component {
     this.onOpenChat(id);
   };
 
+  onRateUser =(obj) => {
+    const { email } = this.getEmail();
+    this.props.rating({ ...obj, userId: email });
+  };
+
   onRemove =() => {
     this.props.remove();
   };
@@ -232,16 +234,24 @@ class Dashboard extends Component {
 
   getEmail = () => this.props.user.userProfile;
 
-  approveUser = (evt, id) => {
-    evt.preventDefault();
-    this.props.remove();
-    this.props.approveUsers(id);
+  addTooltip = (data) => {
+    this.joyride.addTooltip(data);
   };
 
-  rejectUser = (evt, id) => {
+  approveUser = (evt, data) => {
     evt.preventDefault();
+    const { email, displayName } = data;
     this.props.remove();
-    this.props.rejectUsers(id);
+    this.props.sendSms({ ...data, text: `${displayName}, Your License has been Approved.` });
+    this.props.approveUsers(email);
+  };
+
+  rejectUser = (evt, data) => {
+    evt.preventDefault();
+    const { email, displayName } = data;
+    this.props.remove();
+    this.props.sendSms({ ...data, text: `${displayName}, Your License has been Rejected.` });
+    this.props.rejectUsers(email);
   };
 
   changeStatusField =(evt) => {
@@ -352,6 +362,7 @@ class Dashboard extends Component {
             onRemove: this.onRemove,
             onChangeOffence: this.onChangeOffence,
             onLogout: this.onLogout,
+            onToggleInfoDisplay: this.onToggleDisplay,
           }}
           variables={{
             users: this.props.users,
@@ -407,6 +418,7 @@ class Dashboard extends Component {
               onCloseNotification: this.onCloseNotification,
               onToggleDashboard: this.onToggleDashboard,
               onToggleInfoDisplay: this.onToggleDisplay,
+              onRateUser: this.onRateUser,
               updateGeolocationAddress: this.props.updateGeolocationAddress,
             }}
             variables={{
@@ -439,11 +451,13 @@ function mapDispatchToProps(dispatch) {
     fetchUsers: () => dispatch(fetchUsers()),
     getWeather: (city) => dispatch(getWeather(city)),
     getLocation: (id) => dispatch(getMapData(id)),
+    rating: (obj) => dispatch(rating(obj)),
     rejectUsers: (id) => dispatch(rejectUsers(id)),
     remove: () => dispatch(removeChat()),
     registerPushNotification: (id) => dispatch(registerPushNotification(id)),
     searchUsers: (users) => dispatch(searchUsers(users)),
     sendNotification: (token, body) => dispatch(sendNotification(token, body)),
+    sendSms: (obj) => dispatch(sendSms(obj)),
     submitForm: (data, id) => dispatch(submitForm(data, id)),
     submitMessage: (message, id, userProfile) => dispatch(submitMessage(message, id, userProfile)),
     toggleVisibility: (id, status) => dispatch(toggleVisibiliy(id, status)),
@@ -486,6 +500,7 @@ Dashboard.propTypes = {
   notification: PropTypes.shape({
     notif: PropTypes.object,
   }).isRequired,
+  rating: PropTypes.func.isRequired,
   remove: PropTypes.func.isRequired,
   registerPushNotification: PropTypes.func.isRequired,
   rejectUsers: PropTypes.func.isRequired,
@@ -494,6 +509,7 @@ Dashboard.propTypes = {
   }).isRequired,
   searchUsers: PropTypes.func.isRequired,
   sendNotification: PropTypes.func.isRequired,
+  sendSms: PropTypes.func.isRequired,
   status: PropTypes.object.isRequired,
   submitForm: PropTypes.func.isRequired,
   submitMessage: PropTypes.func.isRequired,

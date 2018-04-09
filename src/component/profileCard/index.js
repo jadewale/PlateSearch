@@ -55,7 +55,7 @@ const ProfileCard = ({
         <div className="row">
           <div className="col-sm-4 border-right">
             <div className="description-block">
-              <a onClick={(evt) => approve(evt, data.email)} href="/" className="link-black text-sm">
+              <a onClick={(evt) => approve(evt, data)} href="/" className="link-black text-sm">
                 <i className="fa fa-thumbs-o-up margin-r-5"></i>
                 Approve
               </a>
@@ -72,7 +72,7 @@ const ProfileCard = ({
           </div>
           <div className="col-sm-4">
             <div className="description-block">
-              <a onClick={(evt) => reject(evt, data.email)} href="/" className="link-black text-sm">
+              <a onClick={(evt) => reject(evt, data)} href="/" className="link-black text-sm">
                 <i className="fa fa-thumbs-o-down margin-r-5"></i>
                 Reject
               </a>

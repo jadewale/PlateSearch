@@ -12,7 +12,7 @@ class SignUp extends Component {
     const { email, password } = this.props.admin.adminProfile;
 
 
-    if (email === 'teste@yahoo.com' && password === 'test') {
+    if (email === 'test@yahoo.com' && password === 'test') {
       this.props.updateSignUp('error', '');
       this.props.signUpSuccess();
       AuthService.isAuthenticated = true;

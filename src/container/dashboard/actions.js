@@ -3,7 +3,7 @@ import {
   CREATE_LICENSE, FETCH_USERS, FETCH_USERS_SUCCESS, FETCH_USER_MESSAGE, ADD_CHAT_MESSAGE, SEND_MESSAGE,
   PUSH_NOTIFICATIONS, SEND_NOTIFICATION, SET_NOTIFICATION, DISMISS_NOTIFICATION, UPDATE_STATUS_FIELD, UPDATE_STATUS,
   UPDATE_VISIBILITY, FETCH_GOOGLE_MAPS, APPROVE_USER, REJECT_USERS, SEARCH_USERS, ADD_USER, ERROR_MESSAGES,
-  UPDATE_OFFENCE, FETCH_USER, UPDATE_USER_MAP,
+  UPDATE_OFFENCE, FETCH_USER, UPDATE_USER_MAP, SEND_SMS, RATING,
 } from '../../constants';
 
 export function getWeather(state) {
@@ -188,6 +188,13 @@ export function addErrorMessages(msg) {
   };
 }
 
+export function sendSms(obj) {
+  return {
+    type: SEND_SMS,
+    obj,
+  };
+}
+
 export function updateOffence(offence, id) {
   return {
     type: UPDATE_OFFENCE,
@@ -201,6 +208,13 @@ export function updateUserMap(id, status) {
     type: UPDATE_USER_MAP,
     id,
     status,
+  };
+}
+
+export function rating(obj) {
+  return {
+    type: RATING,
+    obj,
   };
 }
 
