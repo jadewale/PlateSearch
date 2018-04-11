@@ -108,10 +108,8 @@ function* saveLicenseData(action) {
 function* sendChat(action) {
   try {
     const response = yield call(sendMessageAPI, action);
-    debugger
     if (response.success) {
       const { email } = action.userProfile;
-      debugger;
       yield put(fetchChatMessage(action.id, email));
     }
   } catch (e) {
