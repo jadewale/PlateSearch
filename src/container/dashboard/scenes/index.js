@@ -217,8 +217,13 @@ class Dashboard extends Component {
     const { data } = this.props.data;
     const valid = this.validateForm(data);
 
-    const { email } = this.props.user.userProfile;
-    (valid) ? this.props.submitForm(data, email) : this.handleFormError();
+    const { displayName, email } = this.props.user.userProfile;
+    if (valid) {
+      this.props.submitForm(data, email);
+      this.props.sendSms({ ...data, phoneNumber: '+2349097438705', text: `${displayName}, Needs License Approval.` });
+    } else {
+      this.handleFormError();
+    }
   };
 
   onToggleDisplay = (id, map) => {

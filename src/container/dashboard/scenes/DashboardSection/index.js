@@ -117,7 +117,7 @@ class DashboardSection extends React.Component {
                   googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.30&key=AIzaSyAlI8N49LxlVUexUywuoR2CtukrbVKNbY4"
                   loadingElement={<div>Loading</div>}
                   allUsers={users}
-                  admin
+                  admin={admin}
                   containerElement={<div style={{ height: '400px' }} />}
                   mapElement={<div style={{ height: '100%' }} />}
                   isMarkerShown

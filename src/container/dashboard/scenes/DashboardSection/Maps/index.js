@@ -3,13 +3,13 @@ import { GoogleMap, Marker, withGoogleMap, TrafficLayer, withScriptjs, InfoWindo
 import PropTypes from 'prop-types';
 
 const DashboardMap = ({
-  userlocation, allUsers, isMarkerShown, onToggleInfoDisplay,
+  userlocation, allUsers, isMarkerShown, onToggleInfoDisplay, admin,
 }) => (
   <GoogleMap
     defaultZoom={10}
     defaultCenter={{ lat: userlocation.lat, lng: userlocation.lng }}
   >
-    {isMarkerShown && Object.keys(allUsers).map((data) => allUsers[data].latitude && allUsers[data].visible &&
+    {isMarkerShown && Object.keys(allUsers).map((data) => allUsers[data].latitude && (allUsers[data].visible || admin) &&
       <Marker
         icon={require('../../../../../asset/img/car4.png')}
         key={data}
@@ -38,6 +38,11 @@ DashboardMap.propTypes = {
   }).isRequired,
   allUsers: PropTypes.object.isRequired,
   onToggleInfoDisplay: PropTypes.func.isRequired,
+  admin: PropTypes.bool,
+};
+
+DashboardMap.defaultProps = {
+  admin: false,
 };
 
 export default withScriptjs(withGoogleMap(DashboardMap));

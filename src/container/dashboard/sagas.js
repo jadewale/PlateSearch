@@ -165,7 +165,7 @@ function* updateOffence(action) {
 
 function* sms(action) {
   try {
-    const status = yield call(sendSms(action.obj));
+    const status = yield call(sendSms, action.obj);
     debugger;
   } catch (e) {
     console.log(e);
