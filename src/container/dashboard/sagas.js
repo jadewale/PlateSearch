@@ -108,8 +108,10 @@ function* saveLicenseData(action) {
 function* sendChat(action) {
   try {
     const response = yield call(sendMessageAPI, action);
+    debugger
     if (response.success) {
       const { email } = action.userProfile;
+      debugger;
       yield put(fetchChatMessage(action.id, email));
     }
   } catch (e) {
@@ -166,7 +168,6 @@ function* updateOffence(action) {
 function* sms(action) {
   try {
     const status = yield call(sendSms, action.obj);
-    debugger;
   } catch (e) {
     console.log(e);
   }
