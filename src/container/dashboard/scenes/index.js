@@ -141,6 +141,7 @@ class Dashboard extends Component {
     switch (data) {
       case 'expiration': return (this.onDateValidation(value) && this.onPresentDateValidation(value));
       case 'license': return this.onLicenseValidation(value.trim());
+      case 'phoneNumber': return this.onPhoneNumberValidation(value);
       default:
         return true;
     }
@@ -152,6 +153,8 @@ class Dashboard extends Component {
 
   onPresentDateValidation = (dateString) => new Date(dateString) > new Date();
 
+  onPhoneNumberValidation = (number) => number.match(/[+](\d+)/g);
+
   onChangeOffence = (evt, id) => {
     let { value } = evt.target;
     if (value === '--clear--') { value = ''; }
@@ -162,6 +165,7 @@ class Dashboard extends Component {
     switch (data) {
       case 'expiration': return '(DD/MM/YYYY) and should be greater than today';
       case 'license': return 'AAA-111MD';
+      case 'phoneNumber': return '+23490974673';
       default:
         return '';
     }
