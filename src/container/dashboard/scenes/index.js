@@ -34,6 +34,7 @@ class Dashboard extends Component {
       stepIndex: 0,
       steps: [],
       selector: '',
+      open: '',
     };
   }
 
@@ -58,9 +59,9 @@ class Dashboard extends Component {
 
   onToggleDashboard = () => {
     if (this.state.collapse === '') {
-      this.setState({ collapse: 'collapse' });
+      this.setState({ collapse: 'collapse', open: '' });
     } else {
-      this.setState({ collapse: '' });
+      this.setState({ collapse: '', open: 'sidebar-open' });
     }
   };
 
@@ -384,7 +385,7 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
+        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse} ${this.state.open}`}>
           <Joyride
             ref={(c) => (this.joyride = c)}
             callback={this.callback}
