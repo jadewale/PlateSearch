@@ -38,7 +38,10 @@ const Users = (props) => {
     );
   };
 
-  getGeo(latitude, longitude);
+  console.log(latitude, 'is latitude');
+  if (latitude && longitude) {
+    getGeo(latitude, longitude);
+  }
 
   const calculateUserRating = (ratingArg) => {
     const averageRating = [];

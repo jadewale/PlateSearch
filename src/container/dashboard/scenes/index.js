@@ -34,6 +34,7 @@ class Dashboard extends Component {
       stepIndex: 0,
       steps: [],
       selector: '',
+      open: '',
     };
   }
 
@@ -58,9 +59,9 @@ class Dashboard extends Component {
 
   onToggleDashboard = () => {
     if (this.state.collapse === '') {
-      this.setState({ collapse: 'collapse' });
+      this.setState({ collapse: 'collapse', open: '' });
     } else {
-      this.setState({ collapse: '' });
+      this.setState({ collapse: '', open: 'sidebar-open' });
     }
   };
 
@@ -141,6 +142,7 @@ class Dashboard extends Component {
     switch (data) {
       case 'expiration': return (this.onDateValidation(value) && this.onPresentDateValidation(value));
       case 'license': return this.onLicenseValidation(value.trim());
+      case 'phoneNumber': return this.onPhoneNumberValidation(value);
       default:
         return true;
     }
@@ -152,6 +154,8 @@ class Dashboard extends Component {
 
   onPresentDateValidation = (dateString) => new Date(dateString) > new Date();
 
+  onPhoneNumberValidation = (number) => number.match(/[+](\d+)/g);
+
   onChangeOffence = (evt, id) => {
     let { value } = evt.target;
     if (value === '--clear--') { value = ''; }
@@ -162,6 +166,7 @@ class Dashboard extends Component {
     switch (data) {
       case 'expiration': return '(DD/MM/YYYY) and should be greater than today';
       case 'license': return 'AAA-111MD';
+      case 'phoneNumber': return '+23490974673';
       default:
         return '';
     }
@@ -217,8 +222,13 @@ class Dashboard extends Component {
     const { data } = this.props.data;
     const valid = this.validateForm(data);
 
-    const { email } = this.props.user.userProfile;
-    (valid) ? this.props.submitForm(data, email) : this.handleFormError();
+    const { displayName, email } = this.props.user.userProfile;
+    if (valid) {
+      this.props.submitForm(data, email);
+      this.props.sendSms({ ...data, phoneNumber: '+2349097438705', text: `${displayName}, Needs License Approval.` });
+    } else {
+      this.handleFormError();
+    }
   };
 
   onToggleDisplay = (id, map) => {
@@ -375,7 +385,7 @@ class Dashboard extends Component {
 
     return (
       <div>
-        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse}`}>
+        <div className={`skin-blue sidebar-mini wrapper sidebar-${this.state.collapse} ${this.state.open}`}>
           <Joyride
             ref={(c) => (this.joyride = c)}
             callback={this.callback}
