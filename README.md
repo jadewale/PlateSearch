@@ -1,8 +1,1 @@
-Install yarn.
- brew install yarn !!!
-
- pull project, go to directory,
- run --> yarn
- run ---> yarn start
-
-navigate to localhost:3000
+[![CircleCI](https://circleci.com/gh/jadewale/PlateSearch/tree/master.svg?style=svg)](https://circleci.com/gh/jadewale/PlateSearch/tree/master)
