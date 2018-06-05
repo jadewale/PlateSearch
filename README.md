@@ -26,7 +26,18 @@ Navigate to `http://localhost:3000`
 
 ## Snipets of the wonderful project
 
-Admin View
+Admin View Showing Map and users Location.
 
 ![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156936/Screen_Shot_2018-06-04_at_6.02.10_PM_ps6b0n.png)
+
+
+![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156859/Screen_Shot_2018-06-04_at_5.59.42_PM_g3kxmo.png)
+
+Client View and Chat
+
+![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156866/Screen_Shot_2018-06-04_at_5.59.58_PM_tg5hke.png)
+
+
+![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156851/Screen_Shot_2018-06-04_at_5.57.55_PM_z8tgja.png)
+
 
