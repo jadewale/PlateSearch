@@ -3,7 +3,7 @@
 
 [![CircleCI](https://circleci.com/gh/jadewale/PlateSearch.svg?style=svg&circle-token=15f4a483e9cd1ce3e6f4355bf94308d359fd2c9a)](https://circleci.com/gh/jadewale/PlateSearch)
 
-An application which lets users manage thier license expiration but sending them sms notifications close to expiration. It also lets users chat with users within a few meters of thier location. 
+An application which lets users manage their license expiration but sending them sms notifications close to expiration. It also lets users chat with users within a few meters of their location and receive firebase push notifications.
 
 ## Installation
 
