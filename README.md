@@ -28,5 +28,5 @@ Navigate to `http://localhost:3000`
 
 Admin View
 
-    ![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156936/Screen_Shot_2018-06-04_at_6.02.10_PM_ps6b0n.png)
+![alt text](http://res.cloudinary.com/dd58mfinr/image/upload/v1528156936/Screen_Shot_2018-06-04_at_6.02.10_PM_ps6b0n.png)
 
